@@ -7,513 +7,457 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#f0fdfb;
-  --card:#ffffff;
-  --accent:#0891b2;
-  --accent2:#059669;
-  --gold:#0891b2;
-  --salmon:#059669;
-  --text:#0f172a;
-  --muted:#64748b;
-  --border:rgba(8,145,178,0.12);
-  --shadow:0 2px 16px rgba(8,145,178,0.08);
-  --shadow-hover:0 8px 32px rgba(8,145,178,0.2);
-  --grad:linear-gradient(135deg,#0891b2,#059669);
-}
+:root{--bg:#f0fdfb;--card:#fff;--accent:#0891b2;--accent2:#059669;--text:#0f172a;--muted:#64748b;--border:rgba(8,145,178,0.12);--shadow:0 2px 16px rgba(8,145,178,0.08);--shadow-h:0 8px 32px rgba(8,145,178,0.2);--grad:linear-gradient(135deg,#0891b2,#059669);}
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;font-size:15px;min-height:100vh;transition:background 0.4s;}
-
-/* PROTECTION */
-img{-webkit-user-drag:none;user-drag:none;pointer-events:none;}
+body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;font-size:15px;min-height:100vh;}
+img{-webkit-user-drag:none;pointer-events:none;}
 *{-webkit-user-select:none;user-select:none;}
 input,textarea,select{-webkit-user-select:text!important;user-select:text!important;}
 @media print{body{display:none!important;}}
 
-/* NAV */
-nav{position:sticky;top:0;z-index:100;background:rgba(240,253,251,0.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:62px;}
-.nav-logo{font-family:"DM Serif Display",serif;font-size:20px;color:var(--text);cursor:pointer;letter-spacing:-0.5px;}
+nav{position:sticky;top:0;z-index:100;background:rgba(240,253,251,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:62px;}
+.nav-logo{font-family:"DM Serif Display",serif;font-size:20px;color:var(--text);cursor:pointer;}
 .nav-logo em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .nav-links{display:flex;gap:8px;list-style:none;align-items:center;}
-.nav-btn{text-decoration:none;color:var(--muted);font-size:13px;font-weight:500;padding:7px 14px;border-radius:30px;transition:all 0.2s;cursor:pointer;border:none;background:transparent;font-family:"DM Sans",sans-serif;}
-.nav-btn:hover{background:rgba(8,145,178,0.08);color:var(--text);}
-.btn-order{background:var(--grad)!important;color:#fff!important;font-weight:700!important;border-radius:30px!important;}
-.btn-order:hover{opacity:0.9!important;transform:translateY(-1px)!important;}
-.admin-toggle{background:transparent;border:1.5px solid var(--border);color:var(--muted);font-size:12px;font-weight:600;padding:7px 14px;border-radius:30px;cursor:pointer;transition:all 0.2s;font-family:"DM Sans",sans-serif;}
-.admin-toggle.on{background:var(--grad);border-color:transparent;color:#fff;}
+.nbtn{color:var(--muted);font-size:13px;font-weight:500;padding:7px 14px;border-radius:30px;transition:all 0.2s;cursor:pointer;border:none;background:transparent;font-family:"DM Sans",sans-serif;}
+.nbtn:hover{background:rgba(8,145,178,0.08);color:var(--text);}
+.nbtn-order{background:var(--grad)!important;color:#fff!important;font-weight:700!important;border-radius:30px!important;text-decoration:none;display:inline-flex;align-items:center;}
+.nbtn-order:hover{opacity:0.9!important;}
+.atoggle{background:transparent;border:1.5px solid var(--border);color:var(--muted);font-size:12px;font-weight:600;padding:7px 14px;border-radius:30px;cursor:pointer;transition:all 0.2s;font-family:"DM Sans",sans-serif;}
+.atoggle.on{background:var(--grad);border-color:transparent;color:#fff;}
 
-/* PAGES */
-.page{display:none;}
-.page.active{display:block;}
+.page{display:none;}.page.active{display:block;}
 
 /* BENTO */
 .bento{max-width:1100px;margin:40px auto 0;padding:0 24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
 .card{background:var(--card);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;position:relative;}
-.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);}
-
-/* Profile */
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-h);}
 .card-profile{grid-column:1/2;padding:32px 28px;display:flex;flex-direction:column;gap:14px;}
-.profile-pic-wrap{position:relative;width:80px;height:80px;}
-.profile-avatar{width:80px;height:80px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:"DM Serif Display",serif;font-size:28px;color:#fff;}
-.profile-pic-wrap img{width:80px;height:80px;border-radius:50%;object-fit:cover;position:absolute;inset:0;pointer-events:none;}
-.pic-edit-btn{display:none;position:absolute;bottom:0;right:0;width:24px;height:24px;border-radius:50%;background:var(--grad);border:2px solid #fff;align-items:center;justify-content:center;font-size:11px;cursor:pointer;}
-body.admin-mode .pic-edit-btn{display:flex;}
-.profile-name{font-family:"DM Serif Display",serif;font-size:22px;line-height:1.15;}
-.profile-name em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.profile-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(8,145,178,0.08);border-radius:30px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--accent);}
-.profile-bio{font-size:13px;color:var(--muted);line-height:1.6;}
+.pavatar{width:80px;height:80px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:"DM Serif Display",serif;font-size:28px;color:#fff;flex-shrink:0;}
+.pwrap{position:relative;width:80px;height:80px;}
+.pwrap img{width:80px;height:80px;border-radius:50%;object-fit:cover;position:absolute;inset:0;pointer-events:none;}
+.pedit{display:none;position:absolute;bottom:0;right:0;width:24px;height:24px;border-radius:50%;background:var(--grad);border:2px solid #fff;align-items:center;justify-content:center;font-size:11px;cursor:pointer;}
+body.amode .pedit{display:flex;}
+.pname{font-family:"DM Serif Display",serif;font-size:22px;line-height:1.15;}
+.pname em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ptag{display:inline-flex;align-items:center;gap:6px;background:rgba(8,145,178,0.08);border-radius:30px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--accent);}
+.pbio{font-size:13px;color:var(--muted);line-height:1.6;}
 
-/* Cover */
 .card-cover{grid-column:2/4;min-height:220px;background:var(--grad);cursor:pointer;position:relative;}
-.card-cover img{width:100%;height:100%;object-fit:cover;display:block;min-height:220px;pointer-events:none;}
-.cover-ph{width:100%;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
-.cover-ph span{font-size:36px;opacity:0.7;}
-.cover-ph p{font-size:13px;color:rgba(255,255,255,0.8);font-weight:500;}
-.cover-edit{display:none;position:absolute;bottom:14px;right:14px;background:rgba(255,255,255,0.9);color:var(--text);font-size:12px;font-weight:700;padding:8px 16px;border-radius:30px;cursor:pointer;border:none;}
-body.admin-mode .cover-edit{display:block;}
+.card-cover img{width:100%;height:100%;min-height:220px;object-fit:cover;display:block;pointer-events:none;}
+.cph{width:100%;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+.cph span{font-size:36px;opacity:0.7;}
+.cph p{font-size:13px;color:rgba(255,255,255,0.8);}
+.cedit{display:none;position:absolute;bottom:14px;right:14px;background:rgba(255,255,255,0.9);color:var(--text);font-size:12px;font-weight:700;padding:8px 16px;border-radius:30px;cursor:pointer;border:none;}
+body.amode .cedit{display:block;}
 
-/* Social */
 .card-social{grid-column:1/2;padding:24px;display:flex;flex-direction:column;gap:10px;}
-.card-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-.soc-btn{display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:12px;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.2s;}
-.soc-btn:hover{transform:translateX(4px);}
-.fb-s{background:#e8f0fe;color:#1877f2;}
-.tt-s{background:#f0f0f0;color:#000;}
-.edit-soc{display:none;background:transparent;border:1.5px dashed rgba(8,145,178,0.3);color:var(--accent);font-size:11px;font-weight:600;padding:8px 14px;border-radius:10px;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all 0.2s;}
-.edit-soc:hover{background:rgba(8,145,178,0.06);}
-body.admin-mode .edit-soc{display:block;}
+.clabel{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.sbtn{display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:12px;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.2s;}
+.sbtn:hover{transform:translateX(4px);}
+.sfb{background:#e8f0fe;color:#1877f2;}
+.stt{background:#f0f0f0;color:#000;}
+.sedit{display:none;background:transparent;border:1.5px dashed rgba(8,145,178,0.3);color:var(--accent);font-size:11px;font-weight:600;padding:8px 14px;border-radius:10px;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all 0.2s;}
+body.amode .sedit{display:block;}
 
-/* Tagline */
 .card-tagline{grid-column:2/4;padding:32px;background:var(--grad);color:#fff;display:flex;flex-direction:column;justify-content:center;gap:12px;}
 .card-tagline h2{font-family:"DM Serif Display",serif;font-size:28px;line-height:1.2;}
 .card-tagline h2 em{font-style:italic;color:rgba(255,255,255,0.85);}
 .card-tagline p{font-size:13px;color:rgba(255,255,255,0.7);max-width:420px;}
-.tagline-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--accent);font-size:13px;font-weight:700;padding:10px 22px;border-radius:30px;text-decoration:none;width:fit-content;transition:all 0.2s;}
-.tagline-btn:hover{opacity:0.92;transform:translateY(-2px);}
+.tbtn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--accent);font-size:13px;font-weight:700;padding:10px 22px;border-radius:30px;text-decoration:none;width:fit-content;transition:all 0.2s;}
+.tbtn:hover{opacity:0.92;transform:translateY(-2px);}
 
-/* CATEGORIES */
-.cats-section{max-width:1100px;margin:16px auto 0;padding:0 24px 40px;}
-.cats-inner{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:36px;}
-.sec-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
-.sec-heading{font-family:"DM Serif Display",serif;font-size:26px;margin-bottom:28px;}
-.sec-heading em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+/* SECTIONS */
+.section-wrap{max-width:1100px;margin:16px auto 0;padding:0 24px 40px;}
+.sinner{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:36px;}
+.slabel{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+.sheading{font-family:"DM Serif Display",serif;font-size:26px;margin-bottom:28px;}
+.sheading em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* CATS */
 .cats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 .cat-card{background:var(--bg);border-radius:16px;cursor:pointer;transition:all 0.2s;border:2px solid transparent;overflow:hidden;position:relative;}
-.cat-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow-hover);}
-.cat-thumb{width:100%;height:130px;object-fit:cover;display:block;pointer-events:none;}
-.cat-thumb-empty{width:100%;height:130px;background:linear-gradient(135deg,#e0f2fe,#d1fae5);display:flex;align-items:center;justify-content:center;font-size:36px;}
-.cat-info{padding:14px 16px;}
-.cat-name{font-family:"DM Serif Display",serif;font-size:16px;margin-bottom:4px;}
-.cat-count{font-size:12px;color:var(--muted);}
-.cat-arrow{position:absolute;bottom:14px;right:14px;font-size:16px;color:var(--accent);opacity:0;transition:all 0.2s;}
-.cat-card:hover .cat-arrow{opacity:1;transform:translateX(3px);}
+.cat-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow-h);}
+.cthumb{width:100%;height:130px;object-fit:cover;display:block;pointer-events:none;}
+.cthumb-empty{width:100%;height:130px;background:linear-gradient(135deg,#e0f2fe,#d1fae5);display:flex;align-items:center;justify-content:center;font-size:36px;}
+.cinfo{padding:14px 16px;}
+.cname{font-family:"DM Serif Display",serif;font-size:16px;margin-bottom:4px;}
+.ccount{font-size:12px;color:var(--muted);}
+.carrow{position:absolute;bottom:14px;right:14px;font-size:16px;color:var(--accent);opacity:0;transition:all 0.2s;}
+.cat-card:hover .carrow{opacity:1;transform:translateX(3px);}
 
 /* PRICING */
-.pricing-section{max-width:1100px;margin:0 auto;padding:0 24px 60px;}
-.pricing-inner{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:36px;}
-.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;}
-.price-item{background:var(--bg);border-radius:14px;padding:18px 14px;text-align:center;transition:all 0.2s;border:1.5px solid transparent;}
-.price-item:hover{border-color:var(--accent);background:#fff;transform:translateY(-2px);}
-.price-emoji{font-size:26px;margin-bottom:8px;display:block;}
-.price-name{font-size:13px;font-weight:700;margin-bottom:4px;}
-.price-val{font-family:"DM Serif Display",serif;font-size:20px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.price-note{font-size:10px;color:var(--muted);font-style:italic;margin-top:3px;}
-.pricing-note{margin-top:18px;padding:12px 18px;background:rgba(8,145,178,0.06);border-radius:10px;font-size:12px;color:var(--muted);text-align:center;border:1px solid rgba(8,145,178,0.15);}
-.pricing-note strong{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;}
+.pitem{background:var(--bg);border-radius:14px;padding:18px 14px;text-align:center;transition:all 0.2s;border:1.5px solid transparent;}
+.pitem:hover{border-color:var(--accent);background:#fff;transform:translateY(-2px);}
+.pemoji{font-size:26px;margin-bottom:8px;display:block;}
+.pname{font-size:13px;font-weight:700;margin-bottom:4px;}
+.pval{font-family:"DM Serif Display",serif;font-size:20px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.pnote{font-size:10px;color:var(--muted);font-style:italic;margin-top:3px;}
+.pdisclaimer{margin-top:18px;padding:12px 18px;background:rgba(8,145,178,0.06);border-radius:10px;font-size:12px;color:var(--muted);text-align:center;border:1px solid rgba(8,145,178,0.15);}
+.pdisclaimer strong{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 
 /* CAT PAGE */
 .cat-page-wrap{max-width:1100px;margin:32px auto 0;padding:0 24px 60px;}
 .cat-page-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
-.back-btn{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:none;color:var(--text);font-size:13px;font-weight:600;padding:10px 18px;border-radius:30px;cursor:pointer;box-shadow:var(--shadow);transition:all 0.2s;font-family:"DM Sans",sans-serif;}
-.back-btn:hover{box-shadow:var(--shadow-hover);transform:translateX(-2px);}
-.cat-page-title{font-family:"DM Serif Display",serif;font-size:32px;}
-.cat-page-title em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.cat-page-inner{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:36px;}
-.cat-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:24px;}
-.search-box{background:var(--bg);border:none;color:var(--text);font-family:"DM Sans",sans-serif;font-size:13px;padding:9px 18px;border-radius:30px;outline:none;width:220px;transition:all 0.2s;}
-.search-box:focus{background:#fff;box-shadow:0 0 0 2px rgba(8,145,178,0.2);}
-.search-box::placeholder{color:var(--muted);}
-.admin-tools{display:flex;gap:8px;}
-.upload-img-btn{display:none;border:none;padding:9px 18px;border-radius:30px;font-size:13px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all 0.2s;background:var(--grad);color:#fff;}
-.upload-img-btn:hover{opacity:0.9;transform:translateY(-1px);}
-body.admin-mode .upload-img-btn{display:block;}
-.upload-pdf-btn{display:none;border:none;padding:9px 18px;border-radius:30px;font-size:13px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all 0.2s;background:linear-gradient(135deg,#059669,#0891b2);color:#fff;}
-.upload-pdf-btn:hover{opacity:0.9;transform:translateY(-1px);}
-body.admin-mode .upload-pdf-btn{display:block;}
+.bbtn{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:none;color:var(--text);font-size:13px;font-weight:600;padding:10px 18px;border-radius:30px;cursor:pointer;box-shadow:var(--shadow);transition:all 0.2s;font-family:"DM Sans",sans-serif;}
+.bbtn:hover{box-shadow:var(--shadow-h);transform:translateX(-2px);}
+.cptitle{font-family:"DM Serif Display",serif;font-size:32px;}
+.cptitle em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cpinner{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:36px;}
+.toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:24px;}
+.sbox{background:var(--bg);border:none;color:var(--text);font-family:"DM Sans",sans-serif;font-size:13px;padding:9px 18px;border-radius:30px;outline:none;width:220px;transition:all 0.2s;}
+.sbox:focus{background:#fff;box-shadow:0 0 0 2px rgba(8,145,178,0.2);}
+.sbox::placeholder{color:var(--muted);}
+.atools{display:flex;gap:8px;}
+.uibtn{display:none;border:none;padding:9px 18px;border-radius:30px;font-size:13px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all 0.2s;background:var(--grad);color:#fff;}
+.uibtn:hover{opacity:0.9;transform:translateY(-1px);}
+body.amode .uibtn{display:block;}
+.upbtn{display:none;border:none;padding:9px 18px;border-radius:30px;font-size:13px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all 0.2s;background:linear-gradient(135deg,#059669,#0891b2);color:#fff;}
+.upbtn:hover{opacity:0.9;transform:translateY(-1px);}
+body.amode .upbtn{display:block;}
 
-/* Gallery */
-.gallery-grid{columns:3;column-gap:14px;}
-.gallery-item{break-inside:avoid;margin-bottom:14px;border-radius:14px;overflow:hidden;background:var(--bg);border:1.5px solid var(--border);transition:all 0.2s;cursor:pointer;position:relative;}
-.gallery-item:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:rgba(8,145,178,0.4);}
-.gallery-item img{width:100%;display:block;object-fit:cover;pointer-events:none;}
-.gallery-item-info{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
-.gallery-item-meta{flex:1;min-width:0;}
-.gallery-item-title{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.gallery-item-cat{font-size:10px;color:var(--accent);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
-.item-actions{display:flex;gap:4px;flex-shrink:0;}
-.item-edit-btn,.item-delete-btn{display:none;width:26px;height:26px;border-radius:8px;border:none;cursor:pointer;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;}
-.item-edit-btn{background:rgba(8,145,178,0.1);color:var(--accent);}
-.item-delete-btn{background:rgba(220,38,38,0.08);color:#ef4444;}
-body.admin-mode .item-edit-btn,body.admin-mode .item-delete-btn{display:flex;}
+/* GALLERY */
+.ggrid{columns:3;column-gap:14px;}
+.gitem{break-inside:avoid;margin-bottom:14px;border-radius:14px;overflow:hidden;background:var(--bg);border:1.5px solid var(--border);transition:all 0.2s;cursor:pointer;position:relative;}
+.gitem:hover{transform:translateY(-3px);box-shadow:var(--shadow-h);border-color:rgba(8,145,178,0.4);}
+.gitem img{width:100%;display:block;object-fit:cover;pointer-events:none;}
+.ginfo{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.gmeta{flex:1;min-width:0;}
+.gtitle{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gcat{font-size:10px;color:var(--accent);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.gacts{display:flex;gap:4px;flex-shrink:0;}
+.gedit,.gdel{display:none;width:26px;height:26px;border-radius:8px;border:none;cursor:pointer;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;}
+.gedit{background:rgba(8,145,178,0.1);color:var(--accent);}
+.gdel{background:rgba(220,38,38,0.08);color:#ef4444;}
+body.amode .gedit,body.amode .gdel{display:flex;}
 
 /* PDF */
-.pdf-item{break-inside:avoid;margin-bottom:14px;border-radius:14px;overflow:hidden;background:var(--bg);border:1.5px solid var(--border);transition:all 0.2s;}
-.pdf-item:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:rgba(8,145,178,0.4);}
-.pdf-canvas-wrap{width:100%;overflow:hidden;background:#e0f2fe;}
-.pdf-canvas-wrap canvas{width:100%!important;height:auto!important;display:block;pointer-events:none;}
-.pdf-loading-thumb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:140px;cursor:pointer;}
-.pdf-loading-thumb span{font-size:32px;}
-.pdf-loading-thumb p{font-size:11px;color:var(--muted);font-weight:600;}
-.pdf-item-info{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.pdfitem{break-inside:avoid;margin-bottom:14px;border-radius:14px;overflow:hidden;background:var(--bg);border:1.5px solid var(--border);transition:all 0.2s;}
+.pdfitem:hover{transform:translateY(-3px);box-shadow:var(--shadow-h);border-color:rgba(8,145,178,0.4);}
+.pdfcanvas{width:100%;overflow:hidden;background:#e0f2fe;}
+.pdfcanvas canvas{width:100%!important;height:auto!important;display:block;pointer-events:none;}
+.pdfloading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:140px;cursor:pointer;}
+.pdfloading span{font-size:32px;}
+.pdfloading p{font-size:11px;color:var(--muted);font-weight:600;}
+.pdfinfo{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.cartbtn{background:var(--grad);color:#fff;border:none;padding:7px 14px;border-radius:30px;font-size:11px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all 0.2s;}
+.cartbtn:hover{opacity:0.9;transform:scale(1.05);}
 
-.add-cart-btn{background:var(--grad);color:#fff;border:none;padding:7px 14px;border-radius:30px;font-size:11px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all 0.2s;}
-.add-cart-btn:hover{opacity:0.9;transform:scale(1.05);}
-
-.empty-state{text-align:center;padding:48px 20px;color:var(--muted);}
-.empty-icon{font-size:40px;margin-bottom:12px;}
-.loading-state{text-align:center;padding:48px 20px;color:var(--muted);}
-.spinner{display:inline-block;width:20px;height:20px;border:2px solid rgba(8,145,178,0.15);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:8px;}
-.spinner-sm{display:inline-block;width:13px;height:13px;border:2px solid rgba(8,145,178,0.15);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;}
+.estate{text-align:center;padding:48px 20px;color:var(--muted);}
+.eicon{font-size:40px;margin-bottom:12px;}
+.lstate{text-align:center;padding:48px 20px;color:var(--muted);}
+.sp{display:inline-block;width:20px;height:20px;border:2px solid rgba(8,145,178,0.15);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:8px;}
+.spsm{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* POPUP */
-.popup-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);}
-.popup-overlay.open{display:flex;}
-.popup-box{position:relative;max-width:900px;width:100%;display:flex;flex-direction:column;align-items:center;gap:14px;}
-.popup-close{position:absolute;top:-50px;right:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:#fff;width:40px;height:40px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
-.popup-close:hover{background:rgba(255,255,255,0.2);transform:scale(1.1);}
-.popup-img-wrap{position:relative;width:100%;display:flex;align-items:center;justify-content:center;}
-.popup-img{max-width:100%;max-height:68vh;object-fit:contain;border-radius:14px;display:block;pointer-events:none;}
-.popup-wm{position:absolute;bottom:18px;left:50%;transform:translateX(-50%) rotate(-20deg);font-family:"DM Serif Display",serif;font-size:15px;font-weight:700;color:rgba(255,255,255,0.25);text-shadow:0 1px 4px rgba(0,0,0,0.5);pointer-events:none;white-space:nowrap;letter-spacing:2px;z-index:5;}
-.popup-nav{display:flex;align-items:center;gap:16px;}
-.popup-nav-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;width:48px;height:48px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
-.popup-nav-btn:hover{background:var(--accent);border-color:var(--accent);transform:scale(1.08);}
-.popup-nav-btn:disabled{opacity:0.2;cursor:not-allowed;transform:none;}
-.popup-counter{color:rgba(255,255,255,0.5);font-size:13px;font-weight:500;min-width:60px;text-align:center;}
-.popup-info{text-align:center;}
-.popup-title{font-family:"DM Serif Display",serif;font-size:18px;color:#fff;margin-bottom:4px;}
-.popup-cat{font-size:11px;color:#67e8f9;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
-.popup-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.poverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);}
+.poverlay.open{display:flex;}
+.pbox{position:relative;max-width:900px;width:100%;display:flex;flex-direction:column;align-items:center;gap:14px;}
+.pclose{position:absolute;top:-50px;right:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:#fff;width:40px;height:40px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.pclose:hover{background:rgba(255,255,255,0.2);transform:scale(1.1);}
+.pimgwrap{position:relative;width:100%;display:flex;align-items:center;justify-content:center;}
+.pimg{max-width:100%;max-height:68vh;object-fit:contain;border-radius:14px;display:block;pointer-events:none;}
+.pwm{position:absolute;bottom:18px;left:50%;transform:translateX(-50%) rotate(-20deg);font-family:"DM Serif Display",serif;font-size:15px;font-weight:700;color:rgba(255,255,255,0.25);pointer-events:none;white-space:nowrap;letter-spacing:2px;z-index:5;}
+.pnav{display:flex;align-items:center;gap:16px;}
+.pnavbtn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;width:48px;height:48px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.pnavbtn:hover{background:var(--accent);border-color:var(--accent);}
+.pnavbtn:disabled{opacity:0.2;cursor:not-allowed;}
+.pcounter{color:rgba(255,255,255,0.5);font-size:13px;min-width:60px;text-align:center;}
+.ptitleel{font-family:"DM Serif Display",serif;font-size:18px;color:#fff;margin-bottom:4px;text-align:center;}
+.pcatel{font-size:11px;color:#67e8f9;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;}
+.pacts{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
 
 /* CART */
-.cart-fab-wrap{position:fixed;bottom:28px;right:28px;z-index:150;}
-.cart-fab{background:var(--grad);color:#fff;border:none;width:56px;height:56px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 4px 20px rgba(8,145,178,0.35);display:flex;align-items:center;justify-content:center;transition:all 0.2s;position:relative;}
-.cart-fab:hover{transform:scale(1.1);box-shadow:0 8px 28px rgba(8,145,178,0.5);}
-.cart-badge{position:absolute;top:-4px;right:-4px;background:var(--accent2);color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;}
-.cart-badge.show{display:flex;}
-.cart-drawer{position:fixed;right:-420px;top:0;bottom:0;width:400px;max-width:95vw;background:#fff;z-index:400;box-shadow:-4px 0 30px rgba(8,145,178,0.1);transition:right 0.3s cubic-bezier(.34,1.56,.64,1);display:flex;flex-direction:column;}
-.cart-drawer.open{right:0;}
-.cart-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.cart-title{font-family:"DM Serif Display",serif;font-size:20px;}
-.cart-close-btn{background:var(--bg);border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
-.cart-items{flex:1;overflow-y:auto;padding:16px 24px;}
-.cart-item{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--border);}
-.cart-item-icon{width:48px;height:48px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.cart-item-info{flex:1;}
-.cart-item-name{font-size:13px;font-weight:700;margin-bottom:4px;}
-.cart-item-price{font-size:13px;color:var(--accent);font-weight:700;}
-.cart-item-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:4px;transition:color 0.2s;}
-.cart-item-remove:hover{color:#ef4444;}
-.cart-empty-state{text-align:center;padding:40px 20px;color:var(--muted);}
-.cart-footer{padding:20px 24px;border-top:1px solid var(--border);}
-.cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-.cart-total-label{font-size:14px;font-weight:600;}
-.cart-total-amt{font-family:"DM Serif Display",serif;font-size:24px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.checkout-btn{width:100%;background:var(--grad);color:#fff;border:none;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;transition:opacity 0.2s;}
-.checkout-btn:hover{opacity:0.9;}
+.cfab{position:fixed;bottom:28px;right:28px;z-index:150;}
+.cfabbtn{background:var(--grad);color:#fff;border:none;width:56px;height:56px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 4px 20px rgba(8,145,178,0.35);display:flex;align-items:center;justify-content:center;transition:all 0.2s;position:relative;}
+.cfabbtn:hover{transform:scale(1.1);}
+.cbadge{position:absolute;top:-4px;right:-4px;background:var(--accent2);color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;}
+.cbadge.show{display:flex;}
+.cdrawer{position:fixed;right:-420px;top:0;bottom:0;width:400px;max-width:95vw;background:#fff;z-index:400;box-shadow:-4px 0 30px rgba(8,145,178,0.1);transition:right 0.3s cubic-bezier(.34,1.56,.64,1);display:flex;flex-direction:column;}
+.cdrawer.open{right:0;}
+.cheader{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.ctitle{font-family:"DM Serif Display",serif;font-size:20px;}
+.cclosebtn{background:var(--bg);border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.citems{flex:1;overflow-y:auto;padding:16px 24px;}
+.citem{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--border);}
+.cicon{width:48px;height:48px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.citeminfo{flex:1;}
+.citemname{font-size:13px;font-weight:700;margin-bottom:4px;}
+.citemprice{font-size:13px;color:var(--accent);font-weight:700;}
+.cremove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:4px;}
+.cremove:hover{color:#ef4444;}
+.cempty{text-align:center;padding:40px 20px;color:var(--muted);}
+.cfooter{padding:20px 24px;border-top:1px solid var(--border);}
+.ctotalrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.ctotallbl{font-size:14px;font-weight:600;}
+.ctotalamt{font-family:"DM Serif Display",serif;font-size:24px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cobtn{width:100%;background:var(--grad);color:#fff;border:none;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;}
+.cobtn:hover{opacity:0.9;}
 
 /* CHECKOUT */
-.checkout-wrap{max-width:640px;margin:32px auto;padding:0 24px 60px;}
-.checkout-inner{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:36px;}
-.co-section{margin-bottom:28px;}
-.co-title{font-family:"DM Serif Display",serif;font-size:18px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.order-line{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:14px;border-bottom:1px solid rgba(0,0,0,0.04);}
-.order-total{display:flex;justify-content:space-between;align-items:center;padding:12px 0 0;font-weight:700;font-size:16px;}
-.order-total span:last-child{font-family:"DM Serif Display",serif;font-size:22px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.cust-field{width:100%;background:var(--bg);border:1.5px solid transparent;color:var(--text);font-family:"DM Sans",sans-serif;font-size:14px;padding:11px 14px;border-radius:10px;outline:none;margin-bottom:10px;transition:all 0.2s;}
-.cust-field:focus{border-color:var(--accent);background:#fff;}
-.pay-opt{background:var(--bg);border:2px solid transparent;border-radius:14px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;}
-.pay-opt:hover,.pay-opt.sel{border-color:var(--accent);background:#fff;}
-.pay-opt-header{display:flex;align-items:center;gap:12px;}
-.pay-opt-icon{font-size:24px;}
-.pay-opt-name{font-weight:700;font-size:14px;}
-.pay-details{margin-top:12px;padding:12px;background:rgba(8,145,178,0.06);border-radius:10px;font-size:13px;display:none;}
-.pay-opt.sel .pay-details{display:block;}
-.pay-detail-row{display:flex;justify-content:space-between;margin-bottom:4px;}
-.pay-detail-lbl{color:var(--muted);}
-.pay-detail-val{font-weight:700;color:var(--accent);}
-.proof-area{border:2px dashed rgba(8,145,178,0.25);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s;margin-top:8px;}
-.proof-area:hover{border-color:var(--accent);background:rgba(8,145,178,0.04);}
-.proof-preview{width:100%;max-height:200px;object-fit:contain;border-radius:10px;margin-top:10px;display:none;pointer-events:none;}
-.submit-btn{width:100%;background:var(--grad);color:#fff;border:none;padding:16px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all 0.2s;margin-top:8px;}
-.submit-btn:hover{opacity:0.9;transform:translateY(-2px);}
-.submit-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
-.success-box{text-align:center;padding:40px 20px;}
-.success-icon{font-size:60px;margin-bottom:16px;animation:float 1s ease-in-out infinite alternate;display:block;}
-@keyframes float{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+.cowrap{max-width:640px;margin:32px auto;padding:0 24px 60px;}
+.coinner{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:36px;}
+.cosec{margin-bottom:28px;}
+.cotitle{font-family:"DM Serif Display",serif;font-size:18px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.oline{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:14px;border-bottom:1px solid rgba(0,0,0,0.04);}
+.ototl{display:flex;justify-content:space-between;align-items:center;padding:12px 0 0;font-weight:700;font-size:16px;}
+.ototl span:last-child{font-family:"DM Serif Display",serif;font-size:22px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cfield{width:100%;background:var(--bg);border:1.5px solid transparent;color:var(--text);font-family:"DM Sans",sans-serif;font-size:14px;padding:11px 14px;border-radius:10px;outline:none;margin-bottom:10px;transition:all 0.2s;}
+.cfield:focus{border-color:var(--accent);background:#fff;}
+.payopt{background:var(--bg);border:2px solid transparent;border-radius:14px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;}
+.payopt:hover,.payopt.sel{border-color:var(--accent);background:#fff;}
+.payhead{display:flex;align-items:center;gap:12px;}
+.payicon{font-size:24px;}
+.payname{font-weight:700;font-size:14px;}
+.paydet{margin-top:12px;padding:12px;background:rgba(8,145,178,0.06);border-radius:10px;font-size:13px;display:none;}
+.payopt.sel .paydet{display:block;}
+.payrow{display:flex;justify-content:space-between;margin-bottom:4px;}
+.paylbl{color:var(--muted);}
+.payval{font-weight:700;color:var(--accent);}
+.proofarea{border:2px dashed rgba(8,145,178,0.25);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s;margin-top:8px;}
+.proofarea:hover{border-color:var(--accent);background:rgba(8,145,178,0.04);}
+.proofprev{width:100%;max-height:200px;object-fit:contain;border-radius:10px;margin-top:10px;display:none;pointer-events:none;}
+.subbtn{width:100%;background:var(--grad);color:#fff;border:none;padding:16px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all 0.2s;margin-top:8px;}
+.subbtn:hover{opacity:0.9;transform:translateY(-2px);}
+.subbtn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.sucbox{text-align:center;padding:40px 20px;}
+.sucicon{font-size:60px;margin-bottom:16px;animation:fl 1s ease-in-out infinite alternate;display:block;}
+@keyframes fl{from{transform:translateY(0);}to{transform:translateY(-10px);}}
 
 /* PROGRESS */
-.progress-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
-.progress-overlay.open{display:flex;}
-.progress-box{background:#fff;border-radius:24px;padding:36px 40px;width:100%;max-width:360px;box-shadow:0 24px 60px rgba(0,0,0,0.15);text-align:center;}
-.progress-icon{font-size:44px;margin-bottom:12px;display:block;animation:float 1s ease-in-out infinite alternate;}
-.progress-title{font-family:"DM Serif Display",serif;font-size:20px;margin-bottom:4px;color:var(--text);}
-.progress-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
-.progress-bar-wrap{background:rgba(8,145,178,0.1);border-radius:30px;height:10px;overflow:hidden;margin-bottom:12px;}
-.progress-bar{height:10px;border-radius:30px;background:var(--grad);transition:width 0.2s ease;width:0%;}
-.progress-pct{font-family:"DM Serif Display",serif;font-size:36px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:4px 0;}
-.progress-file{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px;margin:0 auto 6px;}
-.progress-count{font-size:12px;font-weight:700;color:var(--text);}
+.progoverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+.progoverlay.open{display:flex;}
+.progbox{background:#fff;border-radius:24px;padding:36px 40px;width:100%;max-width:360px;box-shadow:0 24px 60px rgba(0,0,0,0.15);text-align:center;}
+.progicon{font-size:44px;margin-bottom:12px;display:block;animation:fl 1s ease-in-out infinite alternate;}
+.progtitle{font-family:"DM Serif Display",serif;font-size:20px;margin-bottom:4px;}
+.progsub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.progbarwrap{background:rgba(8,145,178,0.1);border-radius:30px;height:10px;overflow:hidden;margin-bottom:12px;}
+.progbar{height:10px;border-radius:30px;background:var(--grad);transition:width 0.2s;width:0%;}
+.progpct{font-family:"DM Serif Display",serif;font-size:36px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:4px 0;}
+.progfile{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px;margin:0 auto 6px;}
+.progcount{font-size:12px;font-weight:700;color:var(--text);}
 
 /* MODALS */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
-.modal-overlay.open{display:flex;}
+.moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+.moverlay.open{display:flex;}
 .modal{background:#fff;border-radius:20px;padding:28px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,0.15);max-height:90vh;overflow-y:auto;}
 .modal h3{font-family:"DM Serif Display",serif;font-size:22px;margin-bottom:18px;}
-.form-group{margin-bottom:14px;}
-.form-group label{display:block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-.form-group input,.form-group select{width:100%;background:var(--bg);border:1.5px solid transparent;color:var(--text);font-family:"DM Sans",sans-serif;font-size:14px;padding:10px 14px;border-radius:10px;outline:none;transition:all 0.2s;}
-.form-group input:focus,.form-group select:focus{border-color:var(--accent);background:#fff;}
-.form-group select option{background:#fff;}
-.modal-preview{width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-bottom:14px;display:none;pointer-events:none;}
-.modal-btns{display:flex;gap:10px;margin-top:18px;}
-.btn-cancel{flex:1;background:var(--bg);border:none;color:var(--muted);font-family:"DM Sans",sans-serif;font-size:14px;font-weight:600;padding:11px;border-radius:10px;cursor:pointer;}
-.btn-cancel:hover{background:#e2e8f0;}
-.btn-save{flex:2;background:var(--grad);color:#fff;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:700;padding:11px;border-radius:10px;border:none;cursor:pointer;}
-.btn-save:hover{opacity:0.9;}
-.btn-save:disabled{opacity:0.5;cursor:not-allowed;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.fg input,.fg select{width:100%;background:var(--bg);border:1.5px solid transparent;color:var(--text);font-family:"DM Sans",sans-serif;font-size:14px;padding:10px 14px;border-radius:10px;outline:none;transition:all 0.2s;}
+.fg input:focus,.fg select:focus{border-color:var(--accent);background:#fff;}
+.fg select option{background:#fff;}
+.mprev{width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-bottom:14px;display:none;pointer-events:none;}
+.mbtns{display:flex;gap:10px;margin-top:18px;}
+.mcancelbtn{flex:1;background:var(--bg);border:none;color:var(--muted);font-family:"DM Sans",sans-serif;font-size:14px;font-weight:600;padding:11px;border-radius:10px;cursor:pointer;}
+.msavebtn{flex:2;background:var(--grad);color:#fff;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:700;padding:11px;border-radius:10px;border:none;cursor:pointer;}
+.msavebtn:hover{opacity:0.9;}
+.msavebtn:disabled{opacity:0.5;cursor:not-allowed;}
 
-/* PDF Viewer */
-.pdf-viewer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:600;flex-direction:column;}
-.pdf-viewer-overlay.open{display:flex;}
-.pdf-viewer-bar{background:#fff;border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
-.pdf-viewer-title{font-size:14px;font-weight:600;color:var(--text);}
-.pdf-viewer-close{background:rgba(8,145,178,0.1);border:none;color:var(--text);font-size:18px;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.pdf-viewer-close:hover{background:rgba(8,145,178,0.2);}
-.pdf-frame{flex:1;border:none;background:#fff;}
+/* PDF VIEWER */
+.pdfviewer{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:600;flex-direction:column;}
+.pdfviewer.open{display:flex;}
+.pdfbar{background:#fff;border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.pdftitleel{font-size:14px;font-weight:600;color:var(--text);}
+.pdfclosebtn{background:rgba(8,145,178,0.1);border:none;color:var(--text);font-size:18px;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.pdffr{flex:1;border:none;background:#fff;}
 
-/* Toast */
+/* TOAST */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;font-size:13px;font-weight:600;padding:12px 24px;border-radius:30px;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.2);}
 .toast.show{opacity:1;}
 
 /* BG */
-.bg-swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px;}
-.bg-swatch{width:100%;height:48px;border-radius:10px;cursor:pointer;border:3px solid transparent;transition:all 0.2s;}
-.bg-swatch:hover,.bg-swatch.sel{border-color:var(--accent);transform:scale(1.05);}
-.bg-img-label{display:block;background:var(--bg);border:1.5px dashed rgba(8,145,178,0.3);border-radius:10px;padding:12px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);transition:all 0.2s;margin-top:10px;}
-.bg-img-label:hover{border-color:var(--accent);color:var(--accent);}
-.pay-settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.bgswatches{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px;}
+.bgswatch{width:100%;height:48px;border-radius:10px;cursor:pointer;border:3px solid transparent;transition:all 0.2s;}
+.bgswatch:hover,.bgswatch.sel{border-color:var(--accent);transform:scale(1.05);}
+.bgimlbl{display:block;background:var(--bg);border:1.5px dashed rgba(8,145,178,0.3);border-radius:10px;padding:12px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);transition:all 0.2s;margin-top:10px;}
+.psgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 
-/* Scroll top */
-.scroll-top-btn{position:fixed;bottom:96px;right:28px;width:40px;height:40px;border-radius:50%;background:rgba(8,145,178,0.15);border:1.5px solid rgba(8,145,178,0.25);color:var(--accent);font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all 0.3s;z-index:140;backdrop-filter:blur(4px);}
-.scroll-top-btn:hover{background:rgba(8,145,178,0.3);transform:translateY(-2px);}
-.scroll-top-btn.visible{display:flex;}
+/* SCROLL TOP */
+.stbtn{position:fixed;bottom:96px;right:28px;width:40px;height:40px;border-radius:50%;background:rgba(8,145,178,0.15);border:1.5px solid rgba(8,145,178,0.25);color:var(--accent);font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all 0.3s;z-index:140;}
+.stbtn:hover{background:rgba(8,145,178,0.3);}
+.stbtn.vis{display:flex;}
 
-/* Buttons */
-button:not(:disabled),a.tagline-btn,a.soc-btn{transition:transform 0.15s cubic-bezier(.34,1.56,.64,1),box-shadow 0.15s,opacity 0.2s!important;}
+/* ANIMATIONS */
+button:not(:disabled){transition:transform 0.15s cubic-bezier(.34,1.56,.64,1),opacity 0.2s!important;}
 button:not(:disabled):active{transform:scale(0.93)!important;}
-.ripple{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,0.3);animation:ripple-anim 0.55s linear;pointer-events:none;}
-@keyframes ripple-anim{to{transform:scale(4);opacity:0;}}
+.ripple{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,0.3);animation:rpl 0.55s linear;pointer-events:none;}
+@keyframes rpl{to{transform:scale(4);opacity:0;}}
 
-/* View only */
-body:not(.admin-mode) .item-edit-btn,
-body:not(.admin-mode) .item-delete-btn,
-body:not(.admin-mode) .cover-edit,
-body:not(.admin-mode) .pic-edit-btn,
-body:not(.admin-mode) .edit-soc,
-body:not(.admin-mode) .upload-img-btn,
-body:not(.admin-mode) .upload-pdf-btn{display:none!important;}
+/* VIEW ONLY */
+body:not(.amode) .gedit,body:not(.amode) .gdel,body:not(.amode) .cedit,body:not(.amode) .pedit,body:not(.amode) .sedit,body:not(.amode) .uibtn,body:not(.amode) .upbtn{display:none!important;}
 
-/* Responsive */
-@media(max-width:900px){
-  .bento{grid-template-columns:1fr 1fr;}
-  .card-cover,.card-tagline{grid-column:1/3;}
-  .gallery-grid{columns:2;}
-  .cats-grid{grid-template-columns:repeat(2,1fr);}
-}
-@media(max-width:600px){
-  nav{padding:0 14px;}
-  .hide-mob{display:none!important;}
-  .bento,.cats-section,.pricing-section,.cat-page-wrap,.checkout-wrap{padding-left:12px;padding-right:12px;}
-  .bento{grid-template-columns:1fr;}
-  .card-cover,.card-tagline,.card-social{grid-column:1/2;}
-  .gallery-grid{columns:1;}
-  .cats-grid{grid-template-columns:repeat(2,1fr);}
-  .cat-toolbar{flex-direction:column;align-items:flex-start;}
-  .search-box{width:100%;}
-  .pay-settings-grid{grid-template-columns:1fr;}
-  .cat-page-inner{padding:20px;}
-}
+@media(max-width:900px){.bento{grid-template-columns:1fr 1fr;}.card-cover,.card-tagline{grid-column:1/3;}.ggrid{columns:2;}.cats-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){nav{padding:0 14px;}.hmob{display:none!important;}.bento,.section-wrap,.cat-page-wrap,.cowrap{padding-left:12px;padding-right:12px;}.bento{grid-template-columns:1fr;}.card-cover,.card-tagline,.card-social{grid-column:1/2;}.ggrid{columns:1;}.cats-grid{grid-template-columns:repeat(2,1fr);}.toolbar{flex-direction:column;align-items:flex-start;}.sbox{width:100%;}.psgrid{grid-template-columns:1fr;}.cpinner{padding:20px;}}
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo" id="navLogo" onclick="handleLogoTap()">Vincent <em>E.</em> Ideasign</div>
+  <div class="nav-logo" id="nlogo">Vincent <em>E.</em> Ideasign</div>
   <ul class="nav-links">
-    <li class="hide-mob"><button class="nav-btn" onclick="document.getElementById('pricing-anchor').scrollIntoView({behavior:'smooth'})">Pricing</button></li>
-    <li class="hide-mob"><button class="nav-btn" onclick="goHome()">Home</button></li>
-    <li><a href="#" class="nav-btn btn-order" id="orderNavBtn" target="_blank">Order Now</a></li>
-    <li><button class="admin-toggle" id="adminToggle" onclick="toggleAdmin()" style="display:none;"></button></li>
+    <li class="hmob"><button class="nbtn" onclick="document.getElementById('pa').scrollIntoView({behavior:'smooth'})">Pricing</button></li>
+    <li class="hmob"><button class="nbtn" onclick="goHome()">Home</button></li>
+    <li><a href="#" class="nbtn nbtn-order" id="ordernav" target="_blank">Order Now</a></li>
+    <li><button class="atoggle" id="atog" style="display:none;"></button></li>
   </ul>
 </nav>
 
-<div class="page active" id="page-home">
+<!-- HOME -->
+<div class="page active" id="ph">
   <div class="bento">
     <div class="card card-profile">
-      <div class="profile-pic-wrap">
-        <div class="profile-avatar" id="profilePH">VE</div>
-        <img id="profileImg" src="" alt="" style="display:none;">
-        <div class="pic-edit-btn" onclick="document.getElementById('profileInput').click()">✏️</div>
-        <input type="file" id="profileInput" accept="image/*" style="display:none" onchange="uploadSpecial(event,'profile')">
+      <div class="pwrap">
+        <div class="pavatar" id="pavatar">VE</div>
+        <img id="pimg" src="" alt="" style="display:none;">
+        <div class="pedit" onclick="document.getElementById('pinput').click()">✏️</div>
+        <input type="file" id="pinput" accept="image/*" style="display:none" onchange="uploadSpecial(event,'profile')">
       </div>
-      <div class="profile-name">Vincent<br><em>Enovizo</em></div>
-      <div class="profile-tag">🎨 Graphic Designer</div>
-      <div class="profile-bio">Bold, creative visuals for every occasion — posters, tarps, invitations & more. Based in the Philippines 🇵🇭</div>
+      <div class="pname">Vincent<br><em>Enovizo</em></div>
+      <div class="ptag">🎨 Graphic Designer</div>
+      <div class="pbio">Bold, creative visuals for every occasion — posters, tarps, invitations & more. Based in the Philippines 🇵🇭</div>
     </div>
-    <div class="card card-cover" id="coverCard" onclick="if(isAdmin)document.getElementById('coverInput').click()">
-      <div class="cover-ph" id="coverPH"><span>🎨</span><p>Vincent E. Ideasign</p></div>
-      <img id="coverImg" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-      <button class="cover-edit" onclick="event.stopPropagation();document.getElementById('coverInput').click()">📷 Change Cover</button>
-      <input type="file" id="coverInput" accept="image/*" style="display:none" onchange="uploadSpecial(event,'cover')">
+    <div class="card card-cover" id="covcard" onclick="if(isAdmin)document.getElementById('cinput').click()">
+      <div class="cph" id="cph"><span>🎨</span><p>Vincent E. Ideasign</p></div>
+      <img id="cimg" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+      <button class="cedit" onclick="event.stopPropagation();document.getElementById('cinput').click()">📷 Change Cover</button>
+      <input type="file" id="cinput" accept="image/*" style="display:none" onchange="uploadSpecial(event,'cover')">
     </div>
     <div class="card card-social">
-      <div class="card-label">Connect</div>
-      <a href="#" class="soc-btn fb-s" id="fbLink" target="_blank">
+      <div class="clabel">Connect</div>
+      <a href="#" class="sbtn sfb" id="fblink" target="_blank">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877f2"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.27h3.32l-.53 3.5h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
-        <span id="fbTxt">Facebook Page</span>
+        <span id="fbtxt">Facebook Page</span>
       </a>
-      <a href="#" class="soc-btn tt-s" id="ttLink" target="_blank">
+      <a href="#" class="sbtn stt" id="ttlink" target="_blank">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
-        <span id="ttTxt">TikTok</span>
+        <span id="tttxt">TikTok</span>
       </a>
-      <button class="edit-soc" onclick="openModal('socialModal')">✏️ Edit Links</button>
+      <button class="sedit" onclick="openM('msoc')">✏️ Edit Links</button>
     </div>
     <div class="card card-tagline">
       <h2>Designs that<br><em>speak louder</em><br>than words.</h2>
       <p>Bold, creative, and tailored just for you. Let's work together!</p>
-      <a href="#" class="tagline-btn" id="msgBtn" target="_blank">💬 Message Me Now</a>
+      <a href="#" class="tbtn" id="msgbtn" target="_blank">💬 Message Me Now</a>
     </div>
   </div>
 
-  <div class="cats-section">
-    <div class="cats-inner">
-      <div class="sec-label">Browse by Category</div>
-      <div class="sec-heading"><em>Gawang-Kamay</em></div>
-      <div class="cats-grid" id="catsGrid"></div>
+  <div class="section-wrap">
+    <div class="sinner">
+      <div class="slabel">Browse by Category</div>
+      <div class="sheading"><em>Gawang-Kamay</em></div>
+      <div class="cats-grid" id="catsgrid"></div>
     </div>
   </div>
 
-  <div class="pricing-section" id="pricing-anchor" style="margin-top:16px;">
-    <div class="pricing-inner">
-      <div class="sec-label">Services & Rates</div>
-      <div class="sec-heading">What I <em>offer</em></div>
-      <div class="pricing-grid">
-        <div class="price-item"><span class="price-emoji">🖼️</span><div class="price-name">Poster</div><div class="price-val">₱150+</div><div class="price-note">may vary</div></div>
-        <div class="price-item"><span class="price-emoji">📜</span><div class="price-name">Tarpaulin</div><div class="price-val">₱250+</div><div class="price-note">may vary</div></div>
-        <div class="price-item"><span class="price-emoji">💌</span><div class="price-name">Invitation</div><div class="price-val">₱200+</div><div class="price-note">may vary</div></div>
-        <div class="price-item"><span class="price-emoji">📱</span><div class="price-name">Social Media</div><div class="price-val">₱100+</div><div class="price-note">may vary</div></div>
-        <div class="price-item"><span class="price-emoji">📸</span><div class="price-name">Photography</div><div class="price-val">₱200+</div><div class="price-note">may vary</div></div>
-        <div class="price-item"><span class="price-emoji">🎀</span><div class="price-name">Stickers</div><div class="price-val">₱80+</div><div class="price-note">may vary</div></div>
-        <div class="price-item"><span class="price-emoji">✒️</span><div class="price-name">Logo</div><div class="price-val">₱300+</div><div class="price-note">may vary</div></div>
-        <div class="price-item"><span class="price-emoji">🗂️</span><div class="price-name">Happy Desk</div><div class="price-val">₱150+</div><div class="price-note">may vary</div></div>
-        <div class="price-item"><span class="price-emoji">🎨</span><div class="price-name">Others</div><div class="price-val">₱100+</div><div class="price-note">may vary</div></div>
+  <div class="section-wrap" id="pa" style="padding-bottom:60px;">
+    <div class="sinner">
+      <div class="slabel">Services & Rates</div>
+      <div class="sheading">What I <em>offer</em></div>
+      <div class="pgrid">
+        <div class="pitem"><span class="pemoji">🖼️</span><div class="pname">Poster</div><div class="pval">₱150+</div><div class="pnote">may vary</div></div>
+        <div class="pitem"><span class="pemoji">📜</span><div class="pname">Tarpaulin</div><div class="pval">₱250+</div><div class="pnote">may vary</div></div>
+        <div class="pitem"><span class="pemoji">💌</span><div class="pname">Invitation</div><div class="pval">₱200+</div><div class="pnote">may vary</div></div>
+        <div class="pitem"><span class="pemoji">📱</span><div class="pname">Social Media</div><div class="pval">₱100+</div><div class="pnote">may vary</div></div>
+        <div class="pitem"><span class="pemoji">📸</span><div class="pname">Photography</div><div class="pval">₱200+</div><div class="pnote">may vary</div></div>
+        <div class="pitem"><span class="pemoji">🎀</span><div class="pname">Stickers</div><div class="pval">₱80+</div><div class="pnote">may vary</div></div>
+        <div class="pitem"><span class="pemoji">✒️</span><div class="pname">Logo</div><div class="pval">₱300+</div><div class="pnote">may vary</div></div>
+        <div class="pitem"><span class="pemoji">🗂️</span><div class="pname">Happy Desk</div><div class="pval">₱150+</div><div class="pnote">may vary</div></div>
+        <div class="pitem"><span class="pemoji">🎨</span><div class="pname">Others</div><div class="pval">₱100+</div><div class="pnote">may vary</div></div>
       </div>
-      <div class="pricing-note">💡 <strong>Note:</strong> Prices may vary depending on complexity, size, and requirements. Message for a custom quote!</div>
+      <div class="pdisclaimer">💡 <strong>Note:</strong> Prices may vary depending on complexity and requirements. Message for a quote!</div>
     </div>
   </div>
 </div>
 
-<div class="page" id="page-category">
+<!-- CATEGORY PAGE -->
+<div class="page" id="pcat">
   <div class="cat-page-wrap">
     <div class="cat-page-header">
-      <button class="back-btn" onclick="goHome()">← Back</button>
-      <div class="cat-page-title" id="catPageTitle"></div>
+      <button class="bbtn" onclick="goHome()">← Back</button>
+      <div class="cptitle" id="cptitle"></div>
     </div>
-    <div class="cat-page-inner">
-      <div class="cat-toolbar">
-        <input type="text" class="search-box" id="catSearch" placeholder="🔍 Search..." oninput="renderCatGallery()">
-        <div class="admin-tools">
-          <button class="upload-img-btn" onclick="document.getElementById('fileInput').click()">+ Image</button>
-          <button class="upload-pdf-btn" onclick="askPDFPrice()">+ PDF</button>
+    <div class="cpinner">
+      <div class="toolbar">
+        <input type="text" class="sbox" id="sbox" placeholder="🔍 Search..." oninput="renderCat()">
+        <div class="atools">
+          <button class="uibtn" onclick="document.getElementById('fiinput').click()">+ Image</button>
+          <button class="upbtn" onclick="askPDF()">+ PDF</button>
         </div>
       </div>
-      <input type="file" id="fileInput" accept="image/*" multiple style="display:none" onchange="handleUpload(event)">
-      <input type="file" id="pdfInput" accept=".pdf" multiple style="display:none" onchange="handlePDFUpload(event)">
-      <div id="catGalleryContainer"><div class="loading-state"><span class="spinner"></span>Loading...</div></div>
+      <input type="file" id="fiinput" accept="image/*" multiple style="display:none" onchange="handleImgs(event)">
+      <input type="file" id="pdfinput" accept=".pdf" multiple style="display:none" onchange="handlePDFs(event)">
+      <div id="catcon"><div class="lstate"><span class="sp"></span>Loading...</div></div>
     </div>
   </div>
 </div>
 
-<div class="page" id="page-checkout">
-  <div class="checkout-wrap">
+<!-- CHECKOUT -->
+<div class="page" id="pco">
+  <div class="cowrap">
     <div style="display:flex;align-items:center;gap:16px;margin-bottom:28px;">
-      <button class="back-btn" onclick="showPage(prevPage||'page-home')">← Back</button>
+      <button class="bbtn" onclick="showPage(prevPg||'ph')">← Back</button>
       <div style="font-family:'DM Serif Display',serif;font-size:28px;">Checkout</div>
     </div>
-    <div class="checkout-inner" id="checkoutInner"></div>
+    <div class="coinner" id="coinnerEl"></div>
   </div>
 </div>
 
-<div class="cart-fab-wrap">
-  <button class="cart-fab" onclick="toggleCart()">🛒<span class="cart-badge" id="cartBadge">0</span></button>
-</div>
-<div class="cart-drawer" id="cartDrawer">
-  <div class="cart-header">
-    <div class="cart-title">My Cart 🛒</div>
-    <button class="cart-close-btn" onclick="toggleCart()">✕</button>
-  </div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-footer" id="cartFooter" style="display:none;">
-    <div class="cart-total-row"><span class="cart-total-label">Total</span><span class="cart-total-amt" id="cartTotal">₱0</span></div>
-    <button class="checkout-btn" onclick="goCheckout()">Proceed to Checkout →</button>
+<!-- CART -->
+<div class="cfab"><button class="cfabbtn" onclick="toggleCart()">🛒<span class="cbadge" id="cbadge">0</span></button></div>
+<div class="cdrawer" id="cdrawer">
+  <div class="cheader"><div class="ctitle">My Cart 🛒</div><button class="cclosebtn" onclick="toggleCart()">✕</button></div>
+  <div class="citems" id="citems"></div>
+  <div class="cfooter" id="cfooter" style="display:none;">
+    <div class="ctotalrow"><span class="ctotallbl">Total</span><span class="ctotalamt" id="ctotal">₱0</span></div>
+    <button class="cobtn" onclick="goCheckout()">Proceed to Checkout →</button>
   </div>
 </div>
 
-<div class="popup-overlay" id="imgPopup" onclick="if(event.target===this)closePopup()">
-  <div class="popup-box">
-    <button class="popup-close" onclick="closePopup()">✕</button>
-    <div class="popup-img-wrap" id="popupImgWrap"></div>
-    <div class="popup-nav">
-      <button class="popup-nav-btn" id="popupPrev" onclick="popupNav(-1)">←</button>
-      <span class="popup-counter" id="popupCounter">1 / 1</span>
-      <button class="popup-nav-btn" id="popupNext" onclick="popupNav(1)">→</button>
+<!-- IMAGE POPUP -->
+<div class="poverlay" id="imgpopup" onclick="if(event.target===this)closePopup()">
+  <div class="pbox">
+    <button class="pclose" onclick="closePopup()">✕</button>
+    <div class="pimgwrap" id="pimgwrap"></div>
+    <div class="pnav">
+      <button class="pnavbtn" id="pprev" onclick="popNav(-1)">←</button>
+      <span class="pcounter" id="pcounter">1/1</span>
+      <button class="pnavbtn" id="pnext" onclick="popNav(1)">→</button>
     </div>
-    <div class="popup-info">
-      <div class="popup-title" id="popupTitle"></div>
-      <div class="popup-cat" id="popupCat"></div>
-    </div>
-    <div class="popup-actions" id="popupActions"></div>
+    <div><div class="ptitleel" id="ptitleel"></div><div class="pcatel" id="pcatel"></div></div>
+    <div class="pacts" id="pacts"></div>
   </div>
 </div>
 
-<div class="pdf-viewer-overlay" id="pdfViewer">
-  <div class="pdf-viewer-bar">
-    <div class="pdf-viewer-title" id="pdfTitle">Document</div>
-    <button class="pdf-viewer-close" onclick="closePDF()">✕</button>
-  </div>
-  <iframe class="pdf-frame" id="pdfFrame" src=""></iframe>
+<!-- PDF VIEWER -->
+<div class="pdfviewer" id="pdfviewer">
+  <div class="pdfbar"><div class="pdftitleel" id="pdftitleel">Document</div><button class="pdfclosebtn" onclick="closePDF()">✕</button></div>
+  <iframe class="pdffr" id="pdffr" src=""></iframe>
 </div>
 
-<div class="modal-overlay" id="uploadModal">
+<!-- UPLOAD MODAL -->
+<div class="moverlay" id="mupload">
   <div class="modal">
     <h3>Add Design</h3>
-    <img class="modal-preview" id="modalPreview" src="" alt="">
-    <div class="form-group"><label>Title</label><input type="text" id="designTitle" placeholder="e.g. Birthday Tarp 2026"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('uploadModal')">Cancel</button>
-      <button class="btn-save" id="saveBtn" onclick="saveDesign()">Upload ☁️</button>
+    <img class="mprev" id="mprev" src="" alt="">
+    <div class="fg"><label>Title</label><input type="text" id="dtitle" placeholder="e.g. Birthday Tarp 2026"></div>
+    <div class="mbtns">
+      <button class="mcancelbtn" onclick="closeM('mupload')">Cancel</button>
+      <button class="msavebtn" id="savebtn" onclick="saveDesign()">Upload ☁️</button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="editModal">
+<!-- EDIT MODAL -->
+<div class="moverlay" id="medit">
   <div class="modal">
     <h3>✏️ Edit Design</h3>
-    <div class="form-group"><label>Title</label><input type="text" id="editTitle"></div>
-    <div class="form-group"><label>Category</label>
-      <select id="editCategory">
+    <div class="fg"><label>Title</label><input type="text" id="etitle"></div>
+    <div class="fg"><label>Category</label>
+      <select id="ecat">
         <option value="poster">Poster</option><option value="tarp">Tarp</option>
         <option value="invitation">Invitation</option><option value="socialmedia">Social Media</option>
         <option value="photography">Pitik ni Bins</option><option value="stickers">Stickers</option>
@@ -521,128 +465,125 @@ body:not(.admin-mode) .upload-pdf-btn{display:none!important;}
         <option value="other">Other</option>
       </select>
     </div>
-    <div class="form-group"><label>Price (0 = Free)</label><input type="number" id="editPrice" min="0"></div>
-    <input type="hidden" id="editSrc">
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('editModal')">Cancel</button>
-      <button class="btn-save" onclick="saveEdit()">Save ✓</button>
+    <div class="fg"><label>Price (0=Free)</label><input type="number" id="eprice" min="0"></div>
+    <input type="hidden" id="esrc">
+    <div class="mbtns">
+      <button class="mcancelbtn" onclick="closeM('medit')">Cancel</button>
+      <button class="msavebtn" onclick="saveEdit()">Save ✓</button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="socialModal">
+<!-- SOCIAL MODAL -->
+<div class="moverlay" id="msoc">
   <div class="modal">
     <h3>Edit Social Links</h3>
-    <div class="form-group"><label>Facebook URL</label><input type="text" id="fbInput"></div>
-    <div class="form-group"><label>Facebook Name</label><input type="text" id="fbNameInput"></div>
-    <div class="form-group"><label>TikTok URL</label><input type="text" id="ttInput"></div>
-    <div class="form-group"><label>TikTok Name</label><input type="text" id="ttNameInput"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('socialModal')">Cancel</button>
-      <button class="btn-save" onclick="saveSocial()">Save ✓</button>
+    <div class="fg"><label>Facebook URL</label><input type="text" id="fbinput"></div>
+    <div class="fg"><label>Facebook Name</label><input type="text" id="fbname"></div>
+    <div class="fg"><label>TikTok URL</label><input type="text" id="ttinput"></div>
+    <div class="fg"><label>TikTok Name</label><input type="text" id="ttname"></div>
+    <div class="mbtns">
+      <button class="mcancelbtn" onclick="closeM('msoc')">Cancel</button>
+      <button class="msavebtn" onclick="saveSocial()">Save ✓</button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="paymentModal">
+<!-- PAYMENT MODAL -->
+<div class="moverlay" id="mpay">
   <div class="modal" style="max-width:500px;">
     <h3>💳 Payment Settings</h3>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">Shown to clients at checkout.</p>
     <div style="font-weight:700;font-size:13px;margin-bottom:10px;color:var(--accent);">📱 GCash</div>
-    <div class="pay-settings-grid">
-      <div class="form-group"><label>Number</label><input type="text" id="gcashNum"></div>
-      <div class="form-group"><label>Name</label><input type="text" id="gcashName"></div>
+    <div class="psgrid">
+      <div class="fg"><label>Number</label><input type="text" id="gcnum"></div>
+      <div class="fg"><label>Name</label><input type="text" id="gcname"></div>
     </div>
     <div style="font-weight:700;font-size:13px;margin:4px 0 10px;color:var(--accent);">🏦 PNB Bank Transfer</div>
-    <div class="pay-settings-grid">
-      <div class="form-group"><label>Account Number</label><input type="text" id="pnbNum"></div>
-      <div class="form-group"><label>Account Name</label><input type="text" id="pnbName"></div>
+    <div class="psgrid">
+      <div class="fg"><label>Account Number</label><input type="text" id="pnbnum"></div>
+      <div class="fg"><label>Account Name</label><input type="text" id="pnbname"></div>
     </div>
-    <div class="form-group"><label>Messenger Link</label><input type="text" id="messengerLink"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('paymentModal')">Cancel</button>
-      <button class="btn-save" onclick="savePaymentSettings()">Save ✓</button>
+    <div class="fg"><label>Messenger Link</label><input type="text" id="msnlink"></div>
+    <div class="mbtns">
+      <button class="mcancelbtn" onclick="closeM('mpay')">Cancel</button>
+      <button class="msavebtn" onclick="savePayment()">Save ✓</button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="bgModal">
+<!-- BG MODAL -->
+<div class="moverlay" id="mbg">
   <div class="modal">
     <h3>🎨 Background</h3>
-    <div class="form-group"><label>Choose Color</label>
-      <div class="bg-swatches">
-        <div class="bg-swatch sel" style="background:#f0fdfb;" onclick="setBG('#f0fdfb',this)"></div>
-        <div class="bg-swatch" style="background:#f0f9ff;" onclick="setBG('#f0f9ff',this)"></div>
-        <div class="bg-swatch" style="background:#f0fdf4;" onclick="setBG('#f0fdf4',this)"></div>
-        <div class="bg-swatch" style="background:#fdf6ec;" onclick="setBG('#fdf6ec',this)"></div>
-        <div class="bg-swatch" style="background:#faf5ff;" onclick="setBG('#faf5ff',this)"></div>
-        <div class="bg-swatch" style="background:#fff1f2;" onclick="setBG('#fff1f2',this)"></div>
-        <div class="bg-swatch" style="background:#f8fafc;" onclick="setBG('#f8fafc',this)"></div>
-        <div class="bg-swatch" style="background:#09090b;" onclick="setBG('#09090b',this)"></div>
+    <div class="fg"><label>Choose Color</label>
+      <div class="bgswatches">
+        <div class="bgswatch sel" style="background:#f0fdfb;" onclick="setBG('#f0fdfb',this)"></div>
+        <div class="bgswatch" style="background:#f0f9ff;" onclick="setBG('#f0f9ff',this)"></div>
+        <div class="bgswatch" style="background:#f0fdf4;" onclick="setBG('#f0fdf4',this)"></div>
+        <div class="bgswatch" style="background:#fdf6ec;" onclick="setBG('#fdf6ec',this)"></div>
+        <div class="bgswatch" style="background:#faf5ff;" onclick="setBG('#faf5ff',this)"></div>
+        <div class="bgswatch" style="background:#fff1f2;" onclick="setBG('#fff1f2',this)"></div>
+        <div class="bgswatch" style="background:#f8fafc;" onclick="setBG('#f8fafc',this)"></div>
+        <div class="bgswatch" style="background:#09090b;" onclick="setBG('#09090b',this)"></div>
       </div>
     </div>
-    <label class="bg-img-label">🖼️ Upload Background Image<input type="file" accept="image/*" style="display:none" onchange="uploadBG(event)"></label>
-    <div class="modal-btns" style="margin-top:14px;"><button class="btn-save" style="flex:1;" onclick="closeModal('bgModal')">Done</button></div>
+    <label class="bgimlbl">🖼️ Upload Background<input type="file" accept="image/*" style="display:none" onchange="uploadBG(event)"></label>
+    <div class="mbtns" style="margin-top:14px;"><button class="msavebtn" style="flex:1;" onclick="closeM('mbg')">Done</button></div>
   </div>
 </div>
 
-<div class="modal-overlay" id="exitModal">
+<!-- EXIT ADMIN -->
+<div class="moverlay" id="mexit">
   <div class="modal" style="max-width:320px;text-align:center;">
     <div style="font-size:48px;margin-bottom:12px;">🔐</div>
     <h3>Exit Admin Mode?</h3>
     <p style="color:var(--muted);font-size:13px;margin:10px 0 20px;">All changes saved automatically.</p>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('exitModal')">Stay</button>
-      <button class="btn-save" onclick="confirmExit()">Save & Exit ✓</button>
+    <div class="mbtns">
+      <button class="mcancelbtn" onclick="closeM('mexit')">Stay</button>
+      <button class="msavebtn" onclick="confirmExit()">Save & Exit ✓</button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="adminModal">
+<!-- ADMIN LOGIN -->
+<div class="moverlay" id="madmin">
   <div class="modal" style="max-width:320px;text-align:center;">
     <h3>🔐 Admin Login</h3>
     <p style="color:var(--muted);font-size:13px;margin-bottom:14px;">Enter password to unlock editing.</p>
-    <div class="form-group"><input type="password" id="adminPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkAdmin()" style="text-align:center;letter-spacing:4px;font-size:16px;"></div>
-    <div id="adminErr" style="font-size:12px;color:#ef4444;min-height:16px;margin-bottom:8px;"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('adminModal')">Cancel</button>
-      <button class="btn-save" onclick="checkAdmin()">Login</button>
+    <div class="fg"><input type="password" id="apass" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkAdmin()" style="text-align:center;letter-spacing:4px;font-size:16px;"></div>
+    <div id="aerr" style="font-size:12px;color:#ef4444;min-height:16px;margin-bottom:8px;"></div>
+    <div class="mbtns">
+      <button class="mcancelbtn" onclick="closeM('madmin')">Cancel</button>
+      <button class="msavebtn" onclick="checkAdmin()">Login</button>
     </div>
   </div>
 </div>
 
-<div class="progress-overlay" id="progressOverlay">
-  <div class="progress-box">
-    <span class="progress-icon">☁️</span>
-    <div class="progress-title">Uploading to Cloud</div>
-    <div class="progress-sub" id="progressSub">Preparing...</div>
-    <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
-    <div class="progress-pct" id="progressPct">0%</div>
-    <div class="progress-file" id="progressFile"></div>
-    <div class="progress-count" id="progressCount"></div>
+<!-- PROGRESS -->
+<div class="progoverlay" id="progoverlay">
+  <div class="progbox">
+    <span class="progicon">☁️</span>
+    <div class="progtitle">Uploading</div>
+    <div class="progsub" id="progsub">Preparing...</div>
+    <div class="progbarwrap"><div class="progbar" id="progbar"></div></div>
+    <div class="progpct" id="progpct">0%</div>
+    <div class="progfile" id="progfile"></div>
+    <div class="progcount" id="progcount"></div>
   </div>
 </div>
 
-<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button class="stbtn" id="stbtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <div class="toast" id="toast"></div>
 
-<script>var logoTapCount=0,logoTapTimer=null;
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-
-
-// ── CONFIG ──
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-const CLOUD = "di9cwnkdn";
-const PRESET = "pxmgg0qs";
-const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`;
-const PDF_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD}/raw/upload`;
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbxa9AKAJodu3NKDbU93NlgIZzRnMKFbtDjtB-1eGJJQSpUZ2tuQK2N-Eect3jGGPXdCYQ/exec";
-const ADMIN_PASS = "vhinzzy@311995";
-
-const CATS = [
+const CLOUD="di9cwnkdn",PRESET="pxmgg0qs";
+const UPLOAD_URL=`https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`;
+const PDF_URL=`https://api.cloudinary.com/v1_1/${CLOUD}/raw/upload`;
+const SHEET="https://script.google.com/macros/s/AKfycbxa9AKAJodu3NKDbU93NlgIZzRnMKFbtDjtB-1eGJJQSpUZ2tuQK2N-Eect3jGGPXdCYQ/exec";
+const APASS="vhinzzy@311995";
+const CATS=[
   {id:"poster",name:"Poster",emoji:"🖼️"},
   {id:"tarp",name:"Tarp",emoji:"📜"},
   {id:"invitation",name:"Invitation",emoji:"💌"},
@@ -654,678 +595,387 @@ const CATS = [
   {id:"other",name:"Others",emoji:"🎨"},
 ];
 
-let allDesigns=[], settings={}, currentCat=null, prevPage=null;
-let isAdmin=false, cart=[], popupDesigns=[], popupIdx=0;
-let pendingBlob=null, pendingFiles=[], pendingIdx=0;
-let selectedPayment=null;
+let designs=[],cfg={},curCat=null,prevPg=null,isAdmin=false;
+let cart=[],popDs=[],popIdx=0,pendBlob=null,pendFiles=[],pendIdx=0;
+let pdfPrice=0,selPay=null,tapCount=0,tapTimer=null;
 
-// ── TOAST ──
-function showToast(msg,ms=2800){
-  const t=document.getElementById("toast");
-  t.textContent=msg; t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),ms);
-}
+// UTILS
+function toast(m,ms=2800){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),ms);}
+function openM(id){document.getElementById(id).classList.add("open");}
+function closeM(id){document.getElementById(id).classList.remove("open");}
+function showPage(id){prevPg=document.querySelector(".page.active")?.id||"ph";document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo(0,0);}
+function goHome(){curCat=null;showPage("ph");}
 
-// ── MODAL ──
-function openModal(id){document.getElementById(id).classList.add("open");}
-function closeModal(id){document.getElementById(id).classList.remove("open");}
-
-// ── PAGES ──
-function showPage(id){
-  prevPage=document.querySelector(".page.active")?.id||"page-home";
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  window.scrollTo(0,0);
-}
-function goHome(){currentCat=null;showPage("page-home");}
-
-// ── SETTINGS ──
-async function fetchSettings(){
-  try{
-    const res=await fetch(SHEET_URL+"?type=settings&_="+Date.now());
-    const text=await res.text();
-    try{settings=JSON.parse(text)||{};}catch(e){settings={};}
-  }catch(e){settings={};}
+// SETTINGS
+async function loadSettings(){
+  try{const r=await fetch(SHEET+"?type=settings&_="+Date.now());const t=await r.text();try{cfg=JSON.parse(t)||{};}catch(e){cfg={};}}catch(e){cfg={};}
   applySettings();
 }
-
 function applySettings(){
-  if(settings.cover){
-    document.getElementById("coverImg").src=settings.cover;
-    document.getElementById("coverImg").style.display="block";
-    document.getElementById("coverPH").style.display="none";
-  }
-  if(settings.profile){
-    document.getElementById("profileImg").src=settings.profile;
-    document.getElementById("profileImg").style.display="block";
-    document.getElementById("profilePH").style.display="none";
-  }
-  const fb=settings.fb||"#", fbN=settings.fbName||"Facebook Page";
-  const tt=settings.tt||"#", ttN=settings.ttName||"TikTok";
-  document.getElementById("fbLink").href=fb;
-  document.getElementById("fbTxt").textContent=fbN;
-  document.getElementById("ttLink").href=tt;
-  document.getElementById("ttTxt").textContent=ttN;
-  const user=fb.replace(/\/$/,"").split("/").pop();
-  const msgHref=fb!="#"?"https://m.me/"+user:"#";
-  document.getElementById("msgBtn").href=msgHref;
-  document.getElementById("orderNavBtn").href=msgHref;
-  if(settings.bgColor){document.documentElement.style.setProperty("--bg",settings.bgColor);document.body.style.background=settings.bgColor;}
-  if(settings.bgImage){document.body.style.backgroundImage=`url(${settings.bgImage})`;document.body.style.backgroundSize="cover";document.body.style.backgroundAttachment="fixed";}
+  if(cfg.cover){document.getElementById("cimg").src=cfg.cover;document.getElementById("cimg").style.display="block";document.getElementById("cph").style.display="none";}
+  if(cfg.profile){document.getElementById("pimg").src=cfg.profile;document.getElementById("pimg").style.display="block";document.getElementById("pavatar").style.display="none";}
+  const fb=cfg.fb||"#",fbn=cfg.fbName||"Facebook Page",tt=cfg.tt||"#",ttn=cfg.ttName||"TikTok";
+  document.getElementById("fblink").href=fb;document.getElementById("fbtxt").textContent=fbn;
+  document.getElementById("ttlink").href=tt;document.getElementById("tttxt").textContent=ttn;
+  const u=fb.replace(/\/$/,"").split("/").pop();
+  const mh=fb!="#"?"https://m.me/"+u:"#";
+  document.getElementById("msgbtn").href=mh;document.getElementById("ordernav").href=mh;
+  if(cfg.bgColor){document.body.style.background=cfg.bgColor;}
+  if(cfg.bgImage){document.body.style.backgroundImage=`url(${cfg.bgImage})`;document.body.style.backgroundSize="cover";document.body.style.backgroundAttachment="fixed";}
 }
+async function saveCfg(u){Object.assign(cfg,u);applySettings();try{await postSheet({action:"settings",...cfg});}catch(e){}}
 
-async function saveSettings(updates){
-  Object.assign(settings,updates);
-  applySettings();
-  try{await postSheet({action:"settings",...settings});}catch(e){}
-}
-
-// ── FETCH DESIGNS ──
-async function fetchDesigns(){
+// DESIGNS
+async function loadDesigns(){
   try{
-    const res=await fetch(SHEET_URL+"?_="+Date.now());
-    const text=await res.text();
-    let data=[];
-    try{data=JSON.parse(text);}catch(e){data=[];}
-    allDesigns=Array.isArray(data)?data.reverse():[];
-  }catch(e){allDesigns=[];}
+    const r=await fetch(SHEET+"?_="+Date.now());
+    const t=await r.text();
+    let d=[];try{d=JSON.parse(t);}catch(e){d=[];}
+    designs=Array.isArray(d)?d.reverse():[];
+  }catch(e){designs=[];}
   renderCatsGrid();
 }
 
-// ── CATS GRID ──
+// CATS GRID
 function renderCatsGrid(){
-  const grid=document.getElementById("catsGrid");
-  grid.innerHTML=CATS.map(cat=>{
-    const designs=allDesigns.filter(d=>d.category===cat.id);
-    const count=designs.length;
-    const latest=designs.find(d=>d.type!=="pdf");
-    const thumb=latest
-      ?`<img class="cat-thumb" src="${latest.src}" alt="${cat.name}" loading="lazy">`
-      :`<div class="cat-thumb-empty">${cat.emoji}</div>`;
-    return `<div class="cat-card" onclick="openCat('${cat.id}')">
-      ${thumb}
-      <div class="cat-info">
-        <div class="cat-name">${cat.name}</div>
-        <div class="cat-count">${count} design${count!==1?"s":""}</div>
-      </div>
-      <div class="cat-arrow">→</div>
-    </div>`;
+  const g=document.getElementById("catsgrid");
+  g.innerHTML=CATS.map(c=>{
+    const ds=designs.filter(d=>d.category===c.id);
+    const cnt=ds.length;
+    const lt=ds.find(d=>d.type!=="pdf");
+    const th=lt?`<img class="cthumb" src="${lt.src}" alt="${c.name}" loading="lazy">`:`<div class="cthumb-empty">${c.emoji}</div>`;
+    return `<div class="cat-card" onclick="openCat('${c.id}')">${th}<div class="cinfo"><div class="cname">${c.name}</div><div class="ccount">${cnt} design${cnt!==1?"s":""}</div></div><div class="carrow">→</div></div>`;
   }).join("");
 }
 
-// ── OPEN CATEGORY ──
-function openCat(catId){
-  currentCat=catId;
-  const cat=CATS.find(c=>c.id===catId);
-  document.getElementById("catPageTitle").innerHTML=`${cat.emoji} <em style="font-family:'DM Serif Display',serif;font-style:italic;color:#059669;">${cat.name}</em>`;
-  document.getElementById("catSearch").value="";
-  showPage("page-category");
-  renderCatGallery();
+// OPEN CAT
+function openCat(id){
+  curCat=id;
+  const c=CATS.find(x=>x.id===id);
+  document.getElementById("cptitle").innerHTML=`${c.emoji} <em style="font-family:'DM Serif Display',serif;font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${c.name}</em>`;
+  document.getElementById("sbox").value="";
+  showPage("pcat");
+  renderCat();
 }
 
-// ── CATEGORY GALLERY ──
-function renderCatGallery(){
-  const container=document.getElementById("catGalleryContainer");
-  const search=document.getElementById("catSearch").value.toLowerCase();
-  const filtered=allDesigns.filter(d=>d.category===currentCat&&(d.title||"").toLowerCase().includes(search));
-  popupDesigns=filtered.filter(d=>d.type!=="pdf");
-
-  if(!filtered.length){
-    const cat=CATS.find(c=>c.id===currentCat);
-    container.innerHTML=`<div class="empty-state"><div class="empty-icon">${cat?.emoji||"🎨"}</div><p>No designs yet${isAdmin?" — upload your first one!":""}</p></div>`;
+// RENDER CAT
+function renderCat(){
+  const con=document.getElementById("catcon");
+  const s=document.getElementById("sbox").value.toLowerCase();
+  const fil=designs.filter(d=>d.category===curCat&&(d.title||"").toLowerCase().includes(s));
+  popDs=fil.filter(d=>d.type!=="pdf");
+  const pdfs=fil.filter(d=>d.type==="pdf");
+  if(!fil.length){
+    const c=CATS.find(x=>x.id===curCat);
+    con.innerHTML=`<div class="estate"><div class="eicon">${c?.emoji||"🎨"}</div><p>No designs yet${isAdmin?" — upload your first one!":""}</p></div>`;
     return;
   }
-
-  let imgIdx=0;
-  const images=filtered.filter(d=>d.type!=="pdf");
-  const pdfs=filtered.filter(d=>d.type==="pdf");
-  popupDesigns=images;
-  let html="<div class='gallery-grid'>";
-  
-  // Render PDFs first
+  let h="<div class='ggrid'>";
   pdfs.forEach((d,i)=>{
-    const st=(d.title||"").replace(/\'/g,"&#39;");
-    const ss=(d.src||"").replace(/\'/g,"&#39;");
-    const price=d.price||0;
-    const priceDisp=price>0?"₱"+parseFloat(price).toFixed(2):"";
-    const cid="pdfthumb"+i;
-    html+=`<div class="pdf-item">
-      <div onclick="openPDF('${ss}','${st}')" style="cursor:pointer;">
-        <div class="pdf-loading-thumb" id="pdfloading${i}"><span>📄</span><p>PDF Document</p></div>
-        <div class="pdf-canvas-wrap" id="pdfwrap${i}" style="display:none;"><canvas id="${cid}"></canvas></div>
-      </div>
-      <div class="pdf-item-info">
-        <div class="gallery-item-meta">
-          <div class="gallery-item-title">${d.title||"Document"}</div>
-          <div class="gallery-item-cat">PDF${priceDisp?` · <span style="color:#059669;font-weight:700;">${priceDisp}</span>`:""}</div>
-        </div>
-        <div class="item-actions">
-          ${price>0?`<button class="add-cart-btn" onclick="addToCart('${ss}','${st}',${price})">🛒</button>`:""}
-          <button class="item-edit-btn" onclick="openEdit('${ss}','${st}','${d.category||currentCat}',${price})">✏️</button>
-          <button class="item-delete-btn" onclick="deleteDesign('${ss}')">🗑</button>
-        </div>
-      </div>
-    </div>`;
+    const st=(d.title||"").replace(/'/g,"&#39;");const ss=(d.src||"").replace(/'/g,"&#39;");
+    const pr=d.price||0;const pd=pr>0?"₱"+parseFloat(pr).toFixed(2):"";
+    h+=`<div class="pdfitem"><div onclick="openPDF('${ss}','${st}')" style="cursor:pointer;"><div class="pdfloading" id="pdfl${i}"><span>📄</span><p>Loading...</p></div><div class="pdfcanvas" id="pdfw${i}" style="display:none;"><canvas id="pdfc${i}"></canvas></div></div><div class="pdfinfo"><div class="gmeta"><div class="gtitle">${d.title||"Document"}</div><div class="gcat">PDF${pd?` · <span style="color:var(--accent);font-weight:700;">${pd}</span>`:""}</div></div><div class="gacts">${pr>0?`<button class="cartbtn" onclick="addCart('${ss}','${st}',${pr})">🛒</button>`:""}<button class="gedit" onclick="openEdit('${ss}','${st}','${d.category||curCat}',${pr})">✏️</button><button class="gdel" onclick="delDesign('${ss}')">🗑</button></div></div></div>`;
   });
-  
-  images.forEach((d,i)=>{
-    const st=(d.title||"").replace(/'/g,"&#39;");
-    const ss=(d.src||"").replace(/'/g,"&#39;");
-    const price=d.price||0;
-    const priceDisp=price>0?"₱"+parseFloat(price).toFixed(2):"";
-    html+=`<div class="gallery-item" onclick="openPopup(${i})">
-      <img src="${d.src}" alt="${st}" loading="lazy">
-      <div class="gallery-item-info">
-        <div class="gallery-item-meta">
-          <div class="gallery-item-title">${d.title||"Untitled"}</div>
-          <div class="gallery-item-cat">${CATS.find(c=>c.id===currentCat)?.name||currentCat}${priceDisp?` · <span style="color:#059669;font-weight:700;">${priceDisp}</span>`:""}</div>
-        </div>
-        <div class="item-actions">
-          ${price>0?`<button class="add-cart-btn" onclick="event.stopPropagation();addToCart('${ss}','${st}',${price})">🛒</button>`:""}
-          <button class="item-edit-btn" onclick="event.stopPropagation();openEdit('${ss}','${st}','${d.category||currentCat}',${price})">✏️</button>
-          <button class="item-delete-btn" onclick="event.stopPropagation();deleteDesign('${ss}')">🗑</button>
-        </div>
-      </div>
-    </div>`;
+  popDs.forEach((d,i)=>{
+    const st=(d.title||"").replace(/'/g,"&#39;");const ss=(d.src||"").replace(/'/g,"&#39;");
+    const pr=d.price||0;const pd=pr>0?"₱"+parseFloat(pr).toFixed(2):"";
+    h+=`<div class="gitem" onclick="openPop(${i})"><img src="${d.src}" alt="${st}" loading="lazy"><div class="ginfo"><div class="gmeta"><div class="gtitle">${d.title||"Untitled"}</div><div class="gcat">${CATS.find(c=>c.id===curCat)?.name||curCat}${pd?` · <span style="color:var(--accent);font-weight:700;">${pd}</span>`:""}</div></div><div class="gacts">${pr>0?`<button class="cartbtn" onclick="event.stopPropagation();addCart('${ss}','${st}',${pr})">🛒</button>`:""}<button class="gedit" onclick="event.stopPropagation();openEdit('${ss}','${st}','${d.category||curCat}',${pr})">✏️</button><button class="gdel" onclick="event.stopPropagation();delDesign('${ss}')">🗑</button></div></div></div>`;
   });
-  html+="</div>";
-  container.innerHTML=html;
+  h+="</div>";con.innerHTML=h;
+  pdfs.forEach((d,i)=>{
+    setTimeout(async()=>{
+      const l=document.getElementById("pdfl"+i),w=document.getElementById("pdfw"+i);
+      if(!w)return;
+      try{
+        const pu=`https://corsproxy.io/?${encodeURIComponent(d.src)}`;
+        const pdf=await pdfjsLib.getDocument({url:pu,withCredentials:false}).promise;
+        const pg=await pdf.getPage(1);const vp=pg.getViewport({scale:0.5});
+        w.innerHTML=`<canvas id="pdfc${i}"></canvas>`;
+        const cv=document.getElementById("pdfc"+i);cv.width=vp.width;cv.height=vp.height;
+        await pg.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise;
+        if(l)l.style.display="none";w.style.display="block";
+      }catch(e){
+        if(w){w.innerHTML=`<div style="height:140px;background:linear-gradient(135deg,#e0f2fe,#d1fae5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;"><span style="font-size:40px;">📄</span><p style="font-size:11px;font-weight:700;color:var(--accent);">PDF</p></div>`;w.style.display="block";if(l)l.style.display="none";}
+      }
+    },200*i);
+  });
 }
 
-// ── PDF THUMBNAIL ──
-async function renderPDFThumb(url,canvasId,idx){
-  const loading=document.getElementById("loading"+idx);
-  const wrap=document.getElementById("wrap"+idx);
-  if(!wrap)return;
-  
-  try{
-    // Use CORS proxy for Cloudinary raw PDFs
-    const proxyUrl = url.includes('cloudinary.com') 
-      ? `https://corsproxy.io/?${encodeURIComponent(url)}`
-      : url;
-    
-    const loadingTask = pdfjsLib.getDocument({
-      url: proxyUrl,
-      withCredentials: false,
-      cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
-      cMapPacked: true,
-    });
-    
-    const pdf = await loadingTask.promise;
-    const page = await pdf.getPage(1);
-    const vp = page.getViewport({scale:0.6});
-    
-    wrap.innerHTML=`<canvas id="${canvasId}"></canvas>`;
-    const canvas = document.getElementById(canvasId);
-    if(!canvas)return;
-    canvas.width=vp.width; canvas.height=vp.height;
-    await page.render({canvasContext:canvas.getContext("2d"),viewport:vp}).promise;
-    if(loading)loading.style.display="none";
-    wrap.style.display="block";
-  }catch(e){
-    console.log("PDF thumb error:",e);
-    // Fallback - show nice PDF icon
-    if(wrap){
-      wrap.innerHTML=`<div style="height:140px;background:linear-gradient(135deg,#f5f0ff,#e8d5ff);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;">
-        <span style="font-size:44px;">📄</span>
-        <p style="font-size:11px;font-weight:700;color:#8b5cf6;letter-spacing:1px;">PDF</p>
-      </div>`;
-      wrap.style.display="block";
-      if(loading)loading.style.display="none";
-    }
-  }
+// POPUP
+function openPop(i){popIdx=i;renderPop();document.getElementById("imgpopup").classList.add("open");}
+function closePopup(){document.getElementById("imgpopup").classList.remove("open");}
+function popNav(d){const n=popIdx+d;if(n<0||n>=popDs.length)return;popIdx=n;renderPop();}
+function renderPop(){
+  const d=popDs[popIdx];if(!d)return;
+  const ss=(d.src||"").replace(/'/g,"&#39;"),st=(d.title||"").replace(/'/g,"&#39;"),pr=d.price||0;
+  document.getElementById("pimgwrap").innerHTML=`<img class="pimg" src="${d.src}" alt="${st}"><div class="pwm">Vincent E. Ideasign</div>`;
+  document.getElementById("ptitleel").textContent=d.title||"Untitled";
+  document.getElementById("pcatel").textContent=CATS.find(c=>c.id===d.category)?.name||d.category||"";
+  document.getElementById("pcounter").textContent=(popIdx+1)+" / "+popDs.length;
+  document.getElementById("pprev").disabled=popIdx===0;
+  document.getElementById("pnext").disabled=popIdx===popDs.length-1;
+  document.getElementById("pacts").innerHTML=pr>0?`<button class="cartbtn" onclick="addCart('${ss}','${st}',${pr})" style="padding:10px 20px;font-size:13px;">🛒 Add to Cart · ₱${parseFloat(pr).toFixed(2)}</button>`:"";
 }
 
-// ── IMAGE POPUP ──
-function openPopup(idx){
-  popupIdx=idx;
-  renderPopup();
-  document.getElementById("imgPopup").classList.add("open");
-}
-function closePopup(){document.getElementById("imgPopup").classList.remove("open");}
-function popupNav(dir){
-  const n=popupIdx+dir;
-  if(n<0||n>=popupDesigns.length)return;
-  popupIdx=n; renderPopup();
-}
-function renderPopup(){
-  const d=popupDesigns[popupIdx];
-  if(!d)return;
-  const ss=(d.src||"").replace(/'/g,"&#39;");
-  const st=(d.title||"").replace(/'/g,"&#39;");
-  const price=d.price||0;
-  document.getElementById("popupImgWrap").innerHTML=`<img class="popup-img" src="${d.src}" alt="${st}"><div class="popup-wm">Vincent E. Ideasign</div>`;
-  document.getElementById("popupTitle").textContent=d.title||"Untitled";
-  document.getElementById("popupCat").textContent=CATS.find(c=>c.id===d.category)?.name||d.category||"";
-  document.getElementById("popupCounter").textContent=(popupIdx+1)+" / "+popupDesigns.length;
-  document.getElementById("popupPrev").disabled=popupIdx===0;
-  document.getElementById("popupNext").disabled=popupIdx===popupDesigns.length-1;
-  let actions="";
-  if(price>0) actions+=`<button class="add-cart-btn" onclick="addToCart('${ss}','${st}',${price})" style="padding:10px 20px;font-size:13px;">🛒 Add to Cart · ₱${parseFloat(price).toFixed(2)}</button>`;
-  document.getElementById("popupActions").innerHTML=actions;
-}
+// PDF
+function openPDF(src,title){document.getElementById("pdftitleel").textContent=title;document.getElementById("pdffr").src=src;document.getElementById("pdfviewer").classList.add("open");}
+function closePDF(){document.getElementById("pdfviewer").classList.remove("open");document.getElementById("pdffr").src="";}
 
-// PDF viewer removed
-
-// ── UPLOAD ──
-function handleUpload(e){
+// UPLOAD
+function handleImgs(e){
   if(!isAdmin)return;
-  const files=Array.from(e.target.files);
-  if(!files.length)return;
-  if(files.length===1){pendingFiles=files;pendingIdx=0;showSingleModal(files[0]);}
-  else bulkUpload(files,false);
+  const f=Array.from(e.target.files);if(!f.length)return;
+  if(f.length===1){pendFiles=f;pendIdx=0;showSingleModal(f[0]);}
+  else bulkUp(f,false);
   e.target.value="";
 }
-function showSingleModal(file){
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    pendingBlob=file;
-    const p=document.getElementById("modalPreview");
-    p.src=ev.target.result; p.style.display="block";
-    document.getElementById("designTitle").value=file.name.replace(/\.[^.]+$/,"");
-    document.getElementById("saveBtn").textContent="Upload ☁️";
-    document.getElementById("saveBtn").disabled=false;
-    openModal("uploadModal");
-  };
-  reader.readAsDataURL(file);
+function showSingleModal(f){
+  const r=new FileReader();
+  r.onload=ev=>{
+    pendBlob=f;const p=document.getElementById("mprev");
+    p.src=ev.target.result;p.style.display="block";
+    document.getElementById("dtitle").value=f.name.replace(/\.[^.]+$/,"");
+    document.getElementById("savebtn").textContent="Upload ☁️";document.getElementById("savebtn").disabled=false;
+    openM("mupload");
+  };r.readAsDataURL(f);
 }
 async function saveDesign(){
-  if(!pendingBlob)return;
-  const title=document.getElementById("designTitle").value.trim()||"Untitled";
-  const btn=document.getElementById("saveBtn");
-  btn.disabled=true; closeModal("uploadModal");
-  showProgressUI(pendingBlob.name,1,1);
+  if(!pendBlob)return;
+  const title=document.getElementById("dtitle").value.trim()||"Untitled";
+  document.getElementById("savebtn").disabled=true;closeM("mupload");
+  showProg(pendBlob.name,1,1);
   try{
-    const result=await uploadWithProgress(pendingBlob,UPLOAD_URL,false);
-    await postSheet({action:"add",title,category:currentCat,src:result.url,thumb:result.url,type:"image",price:0});
-    allDesigns.unshift({title,category:currentCat,src:result.url,thumb:result.url,type:"image",price:0});
-    renderCatsGrid(); renderCatGallery();
-    hideProgress(); showToast("✅ Uploaded!");
-  }catch(e){hideProgress();showToast("❌ Upload failed.");}
+    const url=await upWithProg(pendBlob,UPLOAD_URL);
+    await postSheet({action:"add",title,category:curCat,src:url,thumb:url,type:"image",price:0});
+    designs.unshift({title,category:curCat,src:url,thumb:url,type:"image",price:0});
+    renderCatsGrid();renderCat();hideProg();toast("✅ Uploaded!");
+  }catch(e){hideProg();toast("❌ Upload failed.");}
 }
-
-// PDF removed
-async function bulkUpload(files,isPDF){
+async function bulkUp(files,isPDF){
   for(let i=0;i<files.length;i++){
-    const f=files[i];
-    showProgressUI(f.name,i+1,files.length,isPDF);
+    const f=files[i];showProg(f.name,i+1,files.length,isPDF);
     try{
-      const result=await uploadWithProgress(f,UPLOAD_URL,isPDF);
+      const url=await upWithProg(f,isPDF?PDF_URL:UPLOAD_URL);
       const title=f.name.replace(/\.[^.]+$/,"");
-      const price=isPDF?pdfPriceInput:0;
-      const type=isPDF?"pdf":"image";
-      // For PDF: store original URL, use thumb for display
-      const srcUrl = isPDF ? result.url : result.url;
-      const thumbUrl = isPDF ? result.thumb : result.url;
-      await postSheet({action:"add",title,category:currentCat,src:srcUrl,thumb:thumbUrl,type,price});
-      allDesigns.unshift({title,category:currentCat,src:srcUrl,thumb:thumbUrl,type,price});
-    }catch(e){
-      console.error("Upload error:",e);
-      showToast("❌ Failed: "+f.name+" - "+e.message);
-    }
+      const price=isPDF?pdfPrice:0;const type=isPDF?"pdf":"image";
+      await postSheet({action:"add",title,category:curCat,src:url,thumb:url,type,price});
+      designs.unshift({title,category:curCat,src:url,thumb:url,type,price});
+    }catch(e){toast("❌ Failed: "+f.name);}
   }
-  hideProgress(); renderCatsGrid(); renderCatGallery();
-  showToast("✅ All uploaded!");
+  hideProg();renderCatsGrid();renderCat();toast("✅ All uploaded!");
+}
+function askPDF(){
+  const p=prompt("Enter price for PDF (0=Free):","299");
+  if(p===null)return;pdfPrice=parseFloat(p)||0;
+  document.getElementById("pdfinput").click();
+}
+function handlePDFs(e){
+  if(!isAdmin)return;const f=Array.from(e.target.files);
+  if(!f.length)return;bulkUp(f,true);e.target.value="";
 }
 
-// ── CRUD: EDIT ──
-function openEdit(src,title,category,price){
-  document.getElementById("editTitle").value=title;
-  document.getElementById("editCategory").value=category||currentCat;
-  document.getElementById("editPrice").value=price||0;
-  document.getElementById("editSrc").value=src;
-  openModal("editModal");
+// EDIT
+function openEdit(src,title,cat,price){
+  document.getElementById("etitle").value=title;document.getElementById("ecat").value=cat||curCat;
+  document.getElementById("eprice").value=price||0;document.getElementById("esrc").value=src;
+  openM("medit");
 }
 async function saveEdit(){
-  const src=document.getElementById("editSrc").value;
-  const title=document.getElementById("editTitle").value.trim()||"Untitled";
-  const category=document.getElementById("editCategory").value;
-  const price=parseFloat(document.getElementById("editPrice").value)||0;
-  // Update local
-  const idx=allDesigns.findIndex(d=>d.src===src);
-  if(idx>-1){allDesigns[idx]={...allDesigns[idx],title,category,price};}
-  // Update sheet
-  try{await postSheet({action:"update",src,title,category,price});}catch(e){}
-  closeModal("editModal");
-  renderCatsGrid(); renderCatGallery();
-  showToast("✅ Updated!");
+  const src=document.getElementById("esrc").value;
+  const title=document.getElementById("etitle").value.trim()||"Untitled";
+  const cat=document.getElementById("ecat").value;
+  const price=parseFloat(document.getElementById("eprice").value)||0;
+  const i=designs.findIndex(d=>d.src===src);
+  if(i>-1)designs[i]={...designs[i],title,category:cat,price};
+  try{await postSheet({action:"update",src,title,category:cat,price});}catch(e){}
+  closeM("medit");renderCatsGrid();renderCat();toast("✅ Updated!");
 }
 
-// ── CRUD: DELETE ──
-async function deleteDesign(src){
-  if(!isAdmin||!confirm("Delete this design?"))return;
-  allDesigns=allDesigns.filter(d=>d.src!==src);
-  renderCatsGrid(); renderCatGallery();
-  try{await postSheet({action:"delete",src}); showToast("🗑️ Deleted!");}
-  catch(e){showToast("🗑️ Removed locally.");}
+// DELETE
+async function delDesign(src){
+  if(!isAdmin||!confirm("Delete this?"))return;
+  designs=designs.filter(d=>d.src!==src);
+  renderCatsGrid();renderCat();
+  try{await postSheet({action:"delete",src});toast("🗑️ Deleted!");}catch(e){}
 }
 
-// ── SPECIAL UPLOAD ──
+// SPECIAL UPLOAD
 async function uploadSpecial(e,type){
-  const file=e.target.files[0]; if(!file)return;
-  showToast("⏳ Uploading...");
-  const fd=new FormData();
-  fd.append("file",file); fd.append("upload_preset",PRESET);
+  const f=e.target.files[0];if(!f)return;toast("⏳ Uploading...");
+  const fd=new FormData();fd.append("file",f);fd.append("upload_preset",PRESET);
   try{
-    const r=await fetch(UPLOAD_URL,{method:"POST",body:fd});
-    const d=await r.json();
-    if(d.secure_url){await saveSettings({[type]:d.secure_url}); showToast("✅ Updated!");}
-    else showToast("❌ Failed.");
-  }catch(e){showToast("❌ Error.");}
+    const r=await fetch(UPLOAD_URL,{method:"POST",body:fd});const d=await r.json();
+    if(d.secure_url){await saveCfg({[type]:d.secure_url});toast("✅ Updated!");}
+    else toast("❌ Failed.");
+  }catch(e){toast("❌ Error.");}
   e.target.value="";
 }
 
-// ── PROGRESS ──
-function showProgressUI(filename,cur,total,isPDF=false){
-  document.getElementById("progressOverlay").classList.add("open");
-  document.getElementById("progressFile").textContent=filename;
-  document.getElementById("progressCount").textContent=total>1?`File ${cur} of ${total}`:"";
-  document.getElementById("progressSub").textContent=isPDF?"Uploading PDF...":"Uploading image...";
-  document.getElementById("progressBar").style.width="0%";
-  document.getElementById("progressPct").textContent="0%";
+// PROGRESS
+function showProg(f,cur,tot,isPDF=false){
+  document.getElementById("progoverlay").classList.add("open");
+  document.getElementById("progfile").textContent=f;
+  document.getElementById("progcount").textContent=tot>1?`File ${cur} of ${tot}`:"";
+  document.getElementById("progsub").textContent=isPDF?"Uploading PDF...":"Uploading image...";
+  document.getElementById("progbar").style.width="0%";document.getElementById("progpct").textContent="0%";
 }
-function updateProgress(pct){
-  document.getElementById("progressBar").style.width=pct+"%";
-  document.getElementById("progressPct").textContent=Math.round(pct)+"%";
-}
-function hideProgress(){
-  updateProgress(100);
-  setTimeout(()=>{
-    document.getElementById("progressOverlay").classList.remove("open");
-    document.getElementById("progressBar").style.width="0%";
-    document.getElementById("progressPct").textContent="0%";
-  },600);
-}
-function uploadWithProgress(file,url,isPDF=false){
-  return new Promise((resolve,reject)=>{
-    const fd=new FormData();
-    fd.append("file",file); 
-    fd.append("upload_preset",PRESET); 
-    fd.append("tags","portfolio");
-    // Use image endpoint for images, raw for PDFs
-    const endpoint = isPDF 
-      ? `https://api.cloudinary.com/v1_1/${CLOUD}/raw/upload`
-      : `https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`;
-    const xhr=new XMLHttpRequest();
-    xhr.open("POST", endpoint);
-    xhr.upload.onprogress=e=>{if(e.lengthComputable)updateProgress((e.loaded/e.total)*100);};
-    xhr.onload=()=>{
-      try{
-        const d=JSON.parse(xhr.responseText);
-        if(d.secure_url){
-          resolve({url: d.secure_url, thumb: d.secure_url});
-        } else reject(new Error(JSON.stringify(d)));
-      }
-      catch(e){reject(e);}
-    };
-    xhr.onerror=()=>reject(new Error("Network error"));
-    xhr.send(fd);
+function updProg(p){document.getElementById("progbar").style.width=p+"%";document.getElementById("progpct").textContent=Math.round(p)+"%";}
+function hideProg(){updProg(100);setTimeout(()=>{document.getElementById("progoverlay").classList.remove("open");document.getElementById("progbar").style.width="0%";document.getElementById("progpct").textContent="0%";},600);}
+function upWithProg(f,url){
+  return new Promise((res,rej)=>{
+    const fd=new FormData();fd.append("file",f);fd.append("upload_preset",PRESET);fd.append("tags","portfolio");
+    const x=new XMLHttpRequest();x.open("POST",url);
+    x.upload.onprogress=e=>{if(e.lengthComputable)updProg((e.loaded/e.total)*100);};
+    x.onload=()=>{try{const d=JSON.parse(x.responseText);if(d.secure_url)res(d.secure_url);else rej();}catch(e){rej(e);}};
+    x.onerror=()=>rej(new Error("Network error"));x.send(fd);
   });
 }
 
-// ── CART ──
-function toggleCart(){document.getElementById("cartDrawer").classList.toggle("open");renderCartDrawer();}
-function addToCart(src,title,price){
-  if(cart.find(i=>i.src===src)){showToast("Already in cart!");return;}
-  cart.push({src,title,price:parseFloat(price)});
-  updateCartBadge(); renderCartDrawer();
-  document.getElementById("cartDrawer").classList.add("open");
-  showToast("✅ Added to cart!");
+// CART
+function toggleCart(){document.getElementById("cdrawer").classList.toggle("open");renderCart();}
+function addCart(src,title,price){
+  if(cart.find(i=>i.src===src)){toast("Already in cart!");return;}
+  cart.push({src,title,price:parseFloat(price)});updBadge();renderCart();
+  document.getElementById("cdrawer").classList.add("open");toast("✅ Added to cart!");
 }
-function removeFromCart(src){cart=cart.filter(i=>i.src!==src);updateCartBadge();renderCartDrawer();}
-function updateCartBadge(){
-  const b=document.getElementById("cartBadge");
-  if(cart.length){b.textContent=cart.length;b.classList.add("show");}
-  else b.classList.remove("show");
-}
-function renderCartDrawer(){
-  const c=document.getElementById("cartItems");
-  const f=document.getElementById("cartFooter");
-  if(!cart.length){c.innerHTML=`<div class="cart-empty-state"><div style="font-size:40px;margin-bottom:12px;">🛒</div><p>Your cart is empty!</p></div>`;f.style.display="none";return;}
+function remCart(src){cart=cart.filter(i=>i.src!==src);updBadge();renderCart();}
+function updBadge(){const b=document.getElementById("cbadge");if(cart.length){b.textContent=cart.length;b.classList.add("show");}else b.classList.remove("show");}
+function renderCart(){
+  const c=document.getElementById("citems"),f=document.getElementById("cfooter");
+  if(!cart.length){c.innerHTML=`<div class="cempty"><div style="font-size:40px;margin-bottom:12px;">🛒</div><p>Your cart is empty!</p></div>`;f.style.display="none";return;}
   f.style.display="block";
-  const total=cart.reduce((s,i)=>s+i.price,0);
-  document.getElementById("cartTotal").textContent="₱"+total.toFixed(2);
-  c.innerHTML=cart.map(item=>`<div class="cart-item">
-    <div class="cart-item-icon">📄</div>
-    <div class="cart-item-info">
-      <div class="cart-item-name">${item.title}</div>
-      <div class="cart-item-price">₱${item.price.toFixed(2)}</div>
-    </div>
-    <button class="cart-item-remove" onclick="removeFromCart('${item.src.replace(/'/g,"&#39;")}')">🗑</button>
-  </div>`).join("");
+  const tot=cart.reduce((s,i)=>s+i.price,0);
+  document.getElementById("ctotal").textContent="₱"+tot.toFixed(2);
+  c.innerHTML=cart.map(i=>`<div class="citem"><div class="cicon">📄</div><div class="citeminfo"><div class="citemname">${i.title}</div><div class="citemprice">₱${i.price.toFixed(2)}</div></div><button class="cremove" onclick="remCart('${i.src.replace(/'/g,"&#39;")}')">🗑</button></div>`).join("");
 }
-function goCheckout(){
-  if(!cart.length)return;
-  document.getElementById("cartDrawer").classList.remove("open");
-  showPage("page-checkout");
-  renderCheckout();
-}
-
-// ── CHECKOUT ──
+function goCheckout(){if(!cart.length)return;document.getElementById("cdrawer").classList.remove("open");showPage("pco");renderCheckout();}
 function renderCheckout(){
-  const total=cart.reduce((s,i)=>s+i.price,0);
-  const gcashNum=settings.gcashNum||"—", gcashName=settings.gcashName||"—";
-  const pnbNum=settings.pnbNum||"—", pnbName=settings.pnbName||"—";
-  const msn=settings.messengerLink||"#";
-  document.getElementById("checkoutInner").innerHTML=`
-    <div id="checkoutForm">
-      <div class="co-section">
-        <div class="co-title">📋 Order Summary</div>
-        ${cart.map(i=>`<div class="order-line"><span>${i.title}</span><span>₱${i.price.toFixed(2)}</span></div>`).join("")}
-        <div class="order-total"><span>Total</span><span>₱${total.toFixed(2)}</span></div>
-      </div>
-      <div class="co-section">
-        <div class="co-title">👤 Your Info</div>
-        <input class="cust-field" id="custName" placeholder="Your Full Name" type="text">
-        <input class="cust-field" id="custContact" placeholder="Facebook Name or Messenger" type="text">
-      </div>
-      <div class="co-section">
-        <div class="co-title">💳 Payment Method</div>
-        <div class="pay-opt" id="opt-gcash" onclick="selectPay('gcash')">
-          <div class="pay-opt-header"><span class="pay-opt-icon">📱</span><span class="pay-opt-name">GCash</span></div>
-          <div class="pay-details">
-            <div class="pay-detail-row"><span class="pay-detail-lbl">Number</span><span class="pay-detail-val">${gcashNum}</span></div>
-            <div class="pay-detail-row"><span class="pay-detail-lbl">Name</span><span class="pay-detail-val">${gcashName}</span></div>
-            <div style="margin-top:8px;font-size:12px;color:var(--muted);">Send ₱${total.toFixed(2)} then upload screenshot below.</div>
-          </div>
-        </div>
-        <div class="pay-opt" id="opt-pnb" onclick="selectPay('pnb')">
-          <div class="pay-opt-header"><span class="pay-opt-icon">🏦</span><span class="pay-opt-name">PNB Bank Transfer</span></div>
-          <div class="pay-details">
-            <div class="pay-detail-row"><span class="pay-detail-lbl">Account No.</span><span class="pay-detail-val">${pnbNum}</span></div>
-            <div class="pay-detail-row"><span class="pay-detail-lbl">Account Name</span><span class="pay-detail-val">${pnbName}</span></div>
-            <div style="margin-top:8px;font-size:12px;color:var(--muted);">Transfer ₱${total.toFixed(2)} then upload screenshot below.</div>
-          </div>
-        </div>
-      </div>
-      <div class="co-section">
-        <div class="co-title">📸 Proof of Payment</div>
-        <div class="proof-area" onclick="document.getElementById('proofInput').click()">
-          <div style="font-size:28px;margin-bottom:8px;">📷</div>
-          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Click to upload screenshot</div>
-          <div style="font-size:12px;color:var(--muted);">GCash or bank transfer receipt</div>
-          <img class="proof-preview" id="proofPreview">
-        </div>
-        <input type="file" id="proofInput" accept="image/*" style="display:none" onchange="previewProof(event)">
-      </div>
-      <button class="submit-btn" id="submitBtn" onclick="submitOrder('${msn}',${total.toFixed(2)})">Submit Order & Send Proof →</button>
-      <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:10px;">After submitting, you will be redirected to Messenger for approval. Files sent after verification! 😊</div>
-    </div>`;
+  const tot=cart.reduce((s,i)=>s+i.price,0);
+  const gcn=cfg.gcashNum||"—",gcname=cfg.gcashName||"—",pnbn=cfg.pnbNum||"—",pnbname=cfg.pnbName||"—",msn=cfg.messengerLink||"#";
+  document.getElementById("coinnerEl").innerHTML=`<div id="coform">
+    <div class="cosec"><div class="cotitle">📋 Order Summary</div>${cart.map(i=>`<div class="oline"><span>${i.title}</span><span>₱${i.price.toFixed(2)}</span></div>`).join("")}<div class="ototl"><span>Total</span><span>₱${tot.toFixed(2)}</span></div></div>
+    <div class="cosec"><div class="cotitle">👤 Your Info</div><input class="cfield" id="cname" placeholder="Your Full Name" type="text"><input class="cfield" id="ccontact" placeholder="Facebook Name or Messenger" type="text"></div>
+    <div class="cosec"><div class="cotitle">💳 Payment Method</div>
+      <div class="payopt" id="og" onclick="selPay2('gcash')"><div class="payhead"><span class="payicon">📱</span><span class="payname">GCash</span></div><div class="paydet"><div class="payrow"><span class="paylbl">Number</span><span class="payval">${gcn}</span></div><div class="payrow"><span class="paylbl">Name</span><span class="payval">${gcname}</span></div><div style="margin-top:8px;font-size:12px;color:var(--muted);">Send ₱${tot.toFixed(2)} then upload screenshot below.</div></div></div>
+      <div class="payopt" id="op" onclick="selPay2('pnb')"><div class="payhead"><span class="payicon">🏦</span><span class="payname">PNB Bank Transfer</span></div><div class="paydet"><div class="payrow"><span class="paylbl">Account No.</span><span class="payval">${pnbn}</span></div><div class="payrow"><span class="paylbl">Account Name</span><span class="payval">${pnbname}</span></div><div style="margin-top:8px;font-size:12px;color:var(--muted);">Transfer ₱${tot.toFixed(2)} then upload screenshot below.</div></div></div>
+    </div>
+    <div class="cosec"><div class="cotitle">📸 Proof of Payment</div><div class="proofarea" onclick="document.getElementById('proofinput').click()"><div style="font-size:28px;margin-bottom:8px;">📷</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">Click to upload screenshot</div><div style="font-size:12px;color:var(--muted);">GCash or bank transfer receipt</div><img class="proofprev" id="proofprev"></div><input type="file" id="proofinput" accept="image/*" style="display:none" onchange="prevProof(event)"></div>
+    <button class="subbtn" id="subbtn" onclick="submitOrder('${msn}',${tot.toFixed(2)})">Submit Order & Send Proof →</button>
+    <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:10px;">After submitting, you'll be redirected to Messenger for approval. Files sent after verification! 😊</div>
+  </div>`;
 }
-function selectPay(type){
-  selectedPayment=type;
-  document.querySelectorAll(".pay-opt").forEach(o=>o.classList.remove("sel"));
-  document.getElementById("opt-"+type).classList.add("sel");
-}
-function previewProof(e){
-  const file=e.target.files[0]; if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{const img=document.getElementById("proofPreview");img.src=ev.target.result;img.style.display="block";};
-  reader.readAsDataURL(file);
-}
-async function submitOrder(msn,total){
-  const name=document.getElementById("custName").value.trim();
-  const contact=document.getElementById("custContact").value.trim();
-  if(!name){showToast("❌ Enter your name!");return;}
-  if(!selectedPayment){showToast("❌ Select payment method!");return;}
-  if(!document.getElementById("proofPreview").src||document.getElementById("proofPreview").style.display==="none"){showToast("❌ Upload proof of payment!");return;}
-  const btn=document.getElementById("submitBtn");
-  btn.disabled=true; btn.textContent="Sending...";
+function selPay2(t){selPay=t;document.querySelectorAll(".payopt").forEach(o=>o.classList.remove("sel"));document.getElementById(t==="gcash"?"og":"op").classList.add("sel");}
+function prevProof(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const i=document.getElementById("proofprev");i.src=ev.target.result;i.style.display="block";};r.readAsDataURL(f);}
+async function submitOrder(msn,tot){
+  const name=document.getElementById("cname").value.trim();const contact=document.getElementById("ccontact").value.trim();
+  if(!name){toast("❌ Enter your name!");return;}
+  if(!selPay){toast("❌ Select payment method!");return;}
+  if(!document.getElementById("proofprev").src||document.getElementById("proofprev").style.display==="none"){toast("❌ Upload proof!");return;}
+  const btn=document.getElementById("subbtn");btn.disabled=true;btn.textContent="Sending...";
   const items=cart.map(i=>i.title).join(", ");
-  const msg=encodeURIComponent(`Hi! I placed an order!
-
-Name: ${name}
-Contact: ${contact}
-Items: ${items}
-Total: ₱${total}
-Payment: ${selectedPayment.toUpperCase()}
-
-Proof uploaded. Please verify! 🙏`);
-  try{await postSheet({action:"order",name,contact,items,total,payment:selectedPayment,date:new Date().toISOString()});}catch(e){}
-  const fbUser=msn.replace(/\/$/,"").split("/").pop();
-  document.getElementById("checkoutInner").innerHTML=`
-    <div class="success-box">
-      <span class="success-icon">🎉</span>
-      <h2 style="font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:10px;">Order Submitted!</h2>
-      <p style="color:var(--muted);font-size:14px;line-height:1.6;">Thank you <strong>${name}</strong>! Please click below to send your proof via Messenger. Files will be sent once verified! 😊</p>
-      <a href="https://m.me/${fbUser}?text=${msg}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#0084ff,#00c6ff);color:#fff;padding:14px 28px;border-radius:12px;text-decoration:none;font-weight:700;font-size:15px;margin-top:20px;">💬 Send via Messenger</a>
-      <button onclick="cart=[];updateCartBadge();goHome();" style="display:block;margin:16px auto 0;background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">← Back to Home</button>
-    </div>`;
+  const msg=encodeURIComponent(`Hi! I placed an order!\n\nName: ${name}\nContact: ${contact}\nItems: ${items}\nTotal: ₱${tot}\nPayment: ${selPay.toUpperCase()}\n\nProof uploaded. Please verify! 🙏`);
+  try{await postSheet({action:"order",name,contact,items,total:tot,payment:selPay,date:new Date().toISOString()});}catch(e){}
+  const fu=msn.replace(/\/$/,"").split("/").pop();
+  document.getElementById("coinnerEl").innerHTML=`<div class="sucbox"><span class="sucicon">🎉</span><h2 style="font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:10px;">Order Submitted!</h2><p style="color:var(--muted);font-size:14px;line-height:1.6;">Thank you <strong>${name}</strong>! Click below to send your proof via Messenger.</p><a href="https://m.me/${fu}?text=${msg}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#0084ff,#00c6ff);color:#fff;padding:14px 28px;border-radius:12px;text-decoration:none;font-weight:700;font-size:15px;margin-top:20px;">💬 Send via Messenger</a><button onclick="cart=[];updBadge();goHome();" style="display:block;margin:16px auto 0;background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">← Back to Home</button></div>`;
 }
 
-// ── SOCIAL ──
-function openSocialModal(){
-  if(!isAdmin){showToast("❌ Admin mode required!");return;}
-  document.getElementById("fbInput").value=settings.fb||"";
-  document.getElementById("fbNameInput").value=settings.fbName||"";
-  document.getElementById("ttInput").value=settings.tt||"";
-  document.getElementById("ttNameInput").value=settings.ttName||"";
-  openModal("socialModal");
-}
+// SOCIAL
 async function saveSocial(){
-  await saveSettings({fb:document.getElementById("fbInput").value.trim()||"#",fbName:document.getElementById("fbNameInput").value.trim()||"Facebook Page",tt:document.getElementById("ttInput").value.trim()||"#",ttName:document.getElementById("ttNameInput").value.trim()||"TikTok"});
-  closeModal("socialModal"); showToast("✅ Social links updated!");
+  if(!isAdmin){toast("❌ Admin required!");return;}
+  await saveCfg({fb:document.getElementById("fbinput").value.trim()||"#",fbName:document.getElementById("fbname").value.trim()||"Facebook Page",tt:document.getElementById("ttinput").value.trim()||"#",ttName:document.getElementById("ttname").value.trim()||"TikTok"});
+  closeM("msoc");toast("✅ Social links updated!");
 }
 
-// ── PAYMENT ──
-function openPaymentModal(){
-  if(!isAdmin){showToast("❌ Admin mode required!");return;}
-  document.getElementById("gcashNum").value=settings.gcashNum||"";
-  document.getElementById("gcashName").value=settings.gcashName||"";
-  document.getElementById("pnbNum").value=settings.pnbNum||"";
-  document.getElementById("pnbName").value=settings.pnbName||"";
-  document.getElementById("messengerLink").value=settings.messengerLink||"";
-  openModal("paymentModal");
+// PAYMENT
+function openPayModal(){
+  if(!isAdmin){toast("❌ Admin required!");return;}
+  document.getElementById("gcnum").value=cfg.gcashNum||"";document.getElementById("gcname").value=cfg.gcashName||"";
+  document.getElementById("pnbnum").value=cfg.pnbNum||"";document.getElementById("pnbname").value=cfg.pnbName||"";
+  document.getElementById("msnlink").value=cfg.messengerLink||"";openM("mpay");
 }
-async function savePaymentSettings(){
-  await saveSettings({gcashNum:document.getElementById("gcashNum").value.trim(),gcashName:document.getElementById("gcashName").value.trim(),pnbNum:document.getElementById("pnbNum").value.trim(),pnbName:document.getElementById("pnbName").value.trim(),messengerLink:document.getElementById("messengerLink").value.trim()});
-  closeModal("paymentModal"); showToast("✅ Payment settings saved!");
+async function savePayment(){
+  await saveCfg({gcashNum:document.getElementById("gcnum").value.trim(),gcashName:document.getElementById("gcname").value.trim(),pnbNum:document.getElementById("pnbnum").value.trim(),pnbName:document.getElementById("pnbname").value.trim(),messengerLink:document.getElementById("msnlink").value.trim()});
+  closeM("mpay");toast("✅ Payment settings saved!");
 }
 
-// ── BACKGROUND ──
-function setBG(color,el){
-  if(!isAdmin){showToast("❌ Admin mode required!");return;}
-  document.querySelectorAll(".bg-swatch").forEach(s=>s.classList.remove("sel"));
-  el.classList.add("sel");
-  document.documentElement.style.setProperty("--bg",color);
-  document.body.style.background=color; document.body.style.backgroundImage="none";
-  saveSettings({bgColor:color,bgImage:""});
+// BG
+function setBG(c,el){
+  if(!isAdmin){toast("❌ Admin required!");return;}
+  document.querySelectorAll(".bgswatch").forEach(s=>s.classList.remove("sel"));el.classList.add("sel");
+  document.body.style.background=c;document.body.style.backgroundImage="none";
+  saveCfg({bgColor:c,bgImage:""});
 }
 async function uploadBG(e){
-  if(!isAdmin){showToast("❌ Admin mode required!");return;}
-  const file=e.target.files[0]; if(!file)return;
-  showToast("⏳ Uploading background...");
-  const fd=new FormData(); fd.append("file",file); fd.append("upload_preset",PRESET);
-  try{
-    const r=await fetch(UPLOAD_URL,{method:"POST",body:fd});
-    const d=await r.json();
-    if(d.secure_url){document.body.style.backgroundImage=`url(${d.secure_url})`;document.body.style.backgroundSize="cover";document.body.style.backgroundAttachment="fixed";await saveSettings({bgImage:d.secure_url,bgColor:""});showToast("✅ Background updated!");}
-  }catch(e){showToast("❌ Failed.");}
+  if(!isAdmin){toast("❌ Admin required!");return;}
+  const f=e.target.files[0];if(!f)return;toast("⏳ Uploading...");
+  const fd=new FormData();fd.append("file",f);fd.append("upload_preset",PRESET);
+  try{const r=await fetch(UPLOAD_URL,{method:"POST",body:fd});const d=await r.json();if(d.secure_url){document.body.style.backgroundImage=`url(${d.secure_url})`;document.body.style.backgroundSize="cover";document.body.style.backgroundAttachment="fixed";await saveCfg({bgImage:d.secure_url,bgColor:""});toast("✅ Background updated!");}else toast("❌ Failed.");}catch(e){toast("❌ Error.");}
 }
 
-// ── ADMIN ──
+// ADMIN
 function toggleAdmin(){
-  if(isAdmin)openModal("exitModal");
-  else{document.getElementById("adminPass").value="";document.getElementById("adminErr").textContent="";openModal("adminModal");setTimeout(()=>document.getElementById("adminPass").focus(),100);}
+  if(isAdmin)openM("mexit");
+  else{document.getElementById("apass").value="";document.getElementById("aerr").textContent="";openM("madmin");setTimeout(()=>document.getElementById("apass").focus(),100);}
 }
 function checkAdmin(){
-  if(document.getElementById("adminPass").value===ADMIN_PASS){
-    isAdmin=true; document.body.classList.add("admin-mode");
-    document.getElementById("adminToggle").style.display="block";
-    document.getElementById("adminToggle").classList.add("on");
-    document.getElementById("adminToggle").textContent="✅ Admin On";
-    closeModal("adminModal"); showToast("🔓 Admin mode on!");
-    if(!document.getElementById("bgNavBtn")){
-      const navLinks=document.querySelector(".nav-links");
-      const bgBtn=document.createElement("button");
-      bgBtn.id="bgNavBtn"; bgBtn.className="nav-btn hide-mob"; bgBtn.textContent="🎨 BG";
-      bgBtn.onclick=()=>openModal("bgModal");
-      const payBtn=document.createElement("button");
-      payBtn.id="payNavBtn"; payBtn.className="nav-btn hide-mob"; payBtn.textContent="💳 Payment";
-      payBtn.onclick=openPaymentModal;
-      navLinks.insertBefore(payBtn,navLinks.firstChild);
-      navLinks.insertBefore(bgBtn,navLinks.firstChild);
+  if(document.getElementById("apass").value===APASS){
+    isAdmin=true;document.body.classList.add("amode");
+    document.getElementById("atog").classList.add("on");document.getElementById("atog").style.display="block";document.getElementById("atog").textContent="✅ Admin On";
+    if(!document.getElementById("bgnavbtn")){
+      const nl=document.querySelector(".nav-links");
+      const b1=document.createElement("button");b1.id="bgnavbtn";b1.className="nbtn hmob";b1.textContent="🎨 BG";b1.onclick=()=>openM("mbg");
+      const b2=document.createElement("button");b2.id="paynavbtn";b2.className="nbtn hmob";b2.textContent="💳 Payment";b2.onclick=openPayModal;
+      nl.insertBefore(b2,nl.firstChild);nl.insertBefore(b1,nl.firstChild);
     }
-  } else {document.getElementById("adminErr").textContent="❌ Wrong password.";}
+    closeM("madmin");toast("🔓 Admin mode on!");
+  }else{document.getElementById("aerr").textContent="❌ Wrong password.";}
 }
 function confirmExit(){
-  isAdmin=false; document.body.classList.remove("admin-mode");
-  document.getElementById("adminToggle").classList.remove("on");
-  document.getElementById("adminToggle").textContent="🔐 Admin";
-  document.getElementById("adminToggle").style.display="none";
-  ["bgNavBtn","payNavBtn"].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});
-  closeModal("exitModal"); showToast("👋 Exited admin mode!");
-  renderCatsGrid(); if(currentCat)renderCatGallery();
+  isAdmin=false;document.body.classList.remove("amode");
+  document.getElementById("atog").classList.remove("on");document.getElementById("atog").textContent="🔐 Admin";document.getElementById("atog").style.display="none";
+  ["bgnavbtn","paynavbtn"].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});
+  closeM("mexit");toast("👋 Exited admin mode!");renderCatsGrid();if(curCat)renderCat();
 }
 
-// ── SHEET POST ──
-async function postSheet(data){
-  try{
-    await fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
-  }catch(e){console.log("Sheet post error:",e);}
-}
+// SHEET
+async function postSheet(d){try{await fetch(SHEET,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)});}catch(e){}}
 
-// ── SECURITY ──
-document.addEventListener("contextmenu",e=>{e.preventDefault();showToast("⚠️ Right-click disabled.");return false;});
+// EVENTS
+document.getElementById("nlogo").onclick=()=>{
+  goHome();tapCount++;clearTimeout(tapTimer);
+  if(tapCount>=5){tapCount=0;toggleAdmin();}
+  tapTimer=setTimeout(()=>{tapCount=0;},2000);
+};
+document.addEventListener("contextmenu",e=>{e.preventDefault();toast("⚠️ Right-click disabled.");return false;});
 document.addEventListener("dragstart",e=>{e.preventDefault();return false;});
 window.addEventListener("beforeprint",e=>{e.preventDefault();return false;});
+window.addEventListener("scroll",()=>{const b=document.getElementById("stbtn");if(window.scrollY>300)b.classList.add("vis");else b.classList.remove("vis");});
 document.addEventListener("keydown",e=>{
-  if(e.ctrlKey&&e.shiftKey&&e.key==="A"){e.preventDefault();toggleAdmin();}
+  if(e.ctrlKey&&e.shiftKey&&e.key==="A"){e.preventDefault();toggleAdmin();return;}
+  if(e.key==="Escape"){
+    closePopup();closePDF();
+    ["mupload","medit","msoc","mpay","mbg","mexit","madmin"].forEach(closeM);
+    return;
+  }
+  if(document.getElementById("imgpopup").classList.contains("open")){
+    if(e.key==="ArrowLeft")popNav(-1);
+    if(e.key==="ArrowRight")popNav(1);
+  }
+  if((e.ctrlKey||e.metaKey)&&["s","u","p"].includes(e.key.toLowerCase())){e.preventDefault();toast("⚠️ Disabled.");return false;}
+  if(e.key==="F12"){e.preventDefault();toast("⚠️ Disabled.");return false;}
 });
-
-// Ripple
 document.addEventListener("click",e=>{
-  const btn=e.target.closest("button,.cat-card,.btn-primary,.btn-ghost,.back-btn");
-  if(!btn)return;
+  const b=e.target.closest("button,.cat-card,.tbtn,.sbtn,.bbtn");
+  if(!b)return;
   const r=document.createElement("span");r.className="ripple";
-  const rect=btn.getBoundingClientRect();const size=Math.max(rect.width,rect.height);
-  r.style.width=r.style.height=size+"px";
-  r.style.left=(e.clientX-rect.left-size/2)+"px";r.style.top=(e.clientY-rect.top-size/2)+"px";
-  r.style.position="absolute";
-  if(getComputedStyle(btn).position==="static")btn.style.position="relative";
-  btn.style.overflow="hidden";btn.appendChild(r);
-  setTimeout(()=>r.remove(),600);
+  const rect=b.getBoundingClientRect();const sz=Math.max(rect.width,rect.height);
+  r.style.width=r.style.height=sz+"px";r.style.left=(e.clientX-rect.left-sz/2)+"px";r.style.top=(e.clientY-rect.top-sz/2)+"px";r.style.position="absolute";
+  if(getComputedStyle(b).position==="static")b.style.position="relative";
+  b.style.overflow="hidden";b.appendChild(r);setTimeout(()=>r.remove(),600);
 });
 
-
-// Update stat count
-function updateStatCount(){
-  document.getElementById("statDesigns").textContent = allDesigns.length;
-}
-const _origRenderCatsGrid = renderCatsGrid;
-function renderCatsGrid(){
-  _origRenderCatsGrid();
-  updateStatCount();
-}
-
-// Scroll to top
-
-// Scroll to top
-window.addEventListener("scroll",()=>{
-  const btn=document.getElementById("scrollTopBtn");
-  if(window.scrollY>300)btn.classList.add("visible");
-  else btn.classList.remove("visible");
-});
+// INIT
+loadSettings();loadDesigns();
 </script>
 </body>
 </html>
