@@ -11,7 +11,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;font-size:15px;min-height:100vh;}
-img{-webkit-user-drag:none;pointer-events:none;}
+img{-webkit-user-drag:none;}
 *{-webkit-user-select:none;user-select:none;}
 input,textarea,select{-webkit-user-select:text!important;user-select:text!important;}
 @media print{body{display:none!important;}}
@@ -31,8 +31,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,253,251,0.95);backdrop
 
 /* BENTO */
 .bento{max-width:1100px;margin:40px auto 0;padding:0 24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
-.card{background:var(--card);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;position:relative;}
-.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-h);}
+.card{background:var(--card);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;transition:transform 0.35s cubic-bezier(.34,1.56,.64,1),box-shadow 0.2s;position:relative;}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow-h);}
 .card-profile{grid-column:1/2;padding:32px 28px;display:flex;flex-direction:column;gap:14px;}
 .pavatar{width:80px;height:80px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:"DM Serif Display",serif;font-size:28px;color:#fff;flex-shrink:0;}
 .pwrap{position:relative;width:80px;height:80px;}
@@ -119,14 +119,14 @@ body.amode .uibtn{display:block;}
 body.amode .upbtn{display:block;}
 
 /* GALLERY */
-.ggrid{columns:3;column-gap:14px;}
-.gitem{break-inside:avoid;margin-bottom:14px;border-radius:14px;overflow:hidden;background:var(--bg);border:1.5px solid var(--border);transition:all 0.2s;cursor:pointer;position:relative;}
-.gitem:hover{transform:translateY(-3px);box-shadow:var(--shadow-h);border-color:rgba(8,145,178,0.4);}
+.ggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start;}
+.gitem{border-radius:14px;overflow:hidden;background:var(--bg);border:1.5px solid var(--border);transition:transform 0.35s cubic-bezier(.34,1.56,.64,1),box-shadow 0.2s,border-color 0.2s;cursor:pointer;position:relative;}
+.gitem:hover{transform:translateY(-5px) scale(1.01);box-shadow:var(--shadow-h);border-color:rgba(8,145,178,0.4);}
 .gitem img{width:100%;display:block;object-fit:cover;pointer-events:none;}
 .ginfo{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
 .gmeta{flex:1;min-width:0;}
-.gtitle{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.gcat{font-size:10px;color:var(--accent);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.gtitle{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4;}
+.gcat{font-size:11px;color:var(--accent);font-weight:700;letter-spacing:0.8px;text-transform:uppercase;margin-top:3px;}
 .gacts{display:flex;gap:4px;flex-shrink:0;}
 .gedit,.gdel{display:none;width:26px;height:26px;border-radius:8px;border:none;cursor:pointer;align-items:center;justify-content:center;font-size:13px;transition:all 0.2s;}
 .gedit{background:rgba(8,145,178,0.1);color:var(--accent);}
@@ -134,8 +134,8 @@ body.amode .upbtn{display:block;}
 body.amode .gedit,body.amode .gdel{display:flex;}
 
 /* PDF */
-.pdfitem{break-inside:avoid;margin-bottom:14px;border-radius:14px;overflow:hidden;background:var(--bg);border:1.5px solid var(--border);transition:all 0.2s;}
-.pdfitem:hover{transform:translateY(-3px);box-shadow:var(--shadow-h);border-color:rgba(8,145,178,0.4);}
+.pdfitem{border-radius:14px;overflow:hidden;background:var(--bg);border:1.5px solid var(--border);transition:transform 0.35s cubic-bezier(.34,1.56,.64,1),box-shadow 0.2s;}
+.pdfitem:hover{transform:translateY(-5px);box-shadow:var(--shadow-h);border-color:rgba(8,145,178,0.4);}
 .pdfcanvas{width:100%;overflow:hidden;background:#e0f2fe;}
 .pdfcanvas canvas{width:100%!important;height:auto!important;display:block;pointer-events:none;}
 .pdfloading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:140px;cursor:pointer;}
@@ -314,8 +314,8 @@ body.amode .add-album-card{display:flex;}
 
 body:not(.amode) .gedit,body:not(.amode) .gdel,body:not(.amode) .cedit,body:not(.amode) .pedit,body:not(.amode) .sedit,body:not(.amode) .uibtn,body:not(.amode) .upbtn{display:none!important;}
 
-@media(max-width:900px){.bento{grid-template-columns:1fr 1fr;}.card-cover,.card-tagline{grid-column:1/3;}.ggrid{columns:2;}.cats-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:600px){nav{padding:0 14px;}.hmob{display:none!important;}.bento,.section-wrap,.cat-page-wrap,.cowrap{padding-left:12px;padding-right:12px;}.bento{grid-template-columns:1fr;}.card-cover,.card-tagline,.card-social{grid-column:1/2;}.ggrid{columns:1;}.cats-grid{grid-template-columns:repeat(2,1fr);}.toolbar{flex-direction:column;align-items:flex-start;}.sbox{width:100%;}.psgrid{grid-template-columns:1fr;}.cpinner{padding:20px;}}
+@media(max-width:900px){.bento{grid-template-columns:1fr 1fr;}.card-cover,.card-tagline{grid-column:1/3;}.ggrid{grid-template-columns:repeat(2,1fr);}.cats-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){nav{padding:0 14px;}.hmob{display:none!important;}.bento,.section-wrap,.cat-page-wrap,.cowrap{padding-left:12px;padding-right:12px;}.bento{grid-template-columns:1fr;}.card-cover,.card-tagline,.card-social{grid-column:1/2;}.ggrid{grid-template-columns:1fr;}.cats-grid{grid-template-columns:repeat(2,1fr);}.toolbar{flex-direction:column;align-items:flex-start;}.sbox{width:100%;}.psgrid{grid-template-columns:1fr;}.cpinner{padding:20px;}}
 </style>
 </head>
 <body>
@@ -663,14 +663,28 @@ function applySettings(){
 }
 async function saveCfg(u){Object.assign(cfg,u);applySettings();try{await postSheet({action:"settings",...cfg});}catch(e){}}
 
+// LOCAL STORAGE PERSISTENCE
+const LS_KEY = 'vhinzzy_designs_v2';
+function lsLoad(){try{const d=localStorage.getItem(LS_KEY);return d?JSON.parse(d):[];}catch(e){return [];}}
+function lsSave(arr){try{localStorage.setItem(LS_KEY,JSON.stringify(arr));}catch(e){toast("⚠️ Storage full — clear old designs.");}}
+
 // DESIGNS
 async function loadDesigns(){
+  // Load from server first, then merge with any local-only entries
+  let remote=[];
   try{
     const r=await fetch(SHEET+"?_="+Date.now());
     const t=await r.text();
     let d=[];try{d=JSON.parse(t);}catch(e){d=[];}
-    designs=Array.isArray(d)?d.reverse():[];
-  }catch(e){designs=[];}
+    remote=Array.isArray(d)?d:[];
+  }catch(e){}
+  const local=lsLoad();
+  // Merge: local-only designs (base64) + remote (cloud), dedupe by src
+  const remoteSrcs=new Set(remote.map(x=>x.src));
+  const localOnly=local.filter(x=>x._local&&!remoteSrcs.has(x.src));
+  designs=[...localOnly,...remote].reverse();
+  // Always keep local cache in sync
+  lsSave(designs);
   renderCatsGrid();
 }
 
@@ -848,10 +862,23 @@ async function saveDesign(){
   showProg(pendBlob.name,1,1);
   try{
     const url=await upWithProg(pendBlob,UPLOAD_URL);
-    await postSheet({action:"add",title,category:curCat,src:url,thumb:url,type:"image",price:0});
-    designs.unshift({title,category:curCat,src:url,thumb:url,type:"image",price:0});
+    const entry={title,category:curCat,src:url,thumb:url,type:"image",price:0};
+    await postSheet({action:"add",...entry});
+    designs.unshift(entry);
+    lsSave(designs);
     renderCatsGrid();renderCat();hideProg();toast("✅ Uploaded!");
-  }catch(e){hideProg();toast("❌ Upload failed.");}
+  }catch(e){
+    // Fallback: save as base64 locally
+    hideProg();
+    try{
+      const reader=new FileReader();
+      reader.onload=ev=>{
+        const b64=ev.target.result;
+        const entry={title,category:curCat,src:b64,thumb:b64,type:"image",price:0,_local:true};
+        designs.unshift(entry);lsSave(designs);renderCatsGrid();renderCat();toast("📱 Saved locally (offline mode)!");
+      };reader.readAsDataURL(pendBlob);
+    }catch(e2){toast("❌ Upload failed.");}
+  }
 }
 async function bulkUp(files,isPDF){
   for(let i=0;i<files.length;i++){
@@ -860,8 +887,10 @@ async function bulkUp(files,isPDF){
       const url=await upWithProg(f,isPDF?PDF_URL:UPLOAD_URL);
       const title=f.name.replace(/\.[^.]+$/,"");
       const price=isPDF?pdfPrice:0;const type=isPDF?"pdf":"image";
-      await postSheet({action:"add",title,category:curCat,src:url,thumb:url,type,price});
-      designs.unshift({title,category:curCat,src:url,thumb:url,type,price});
+      const entry={title,category:curCat,src:url,thumb:url,type,price};
+      await postSheet({action:"add",...entry});
+      designs.unshift(entry);
+      lsSave(designs);
     }catch(e){toast("❌ Failed: "+f.name);}
   }
   hideProg();renderCatsGrid();renderCat();toast("✅ All uploaded!");
@@ -889,6 +918,7 @@ async function saveEdit(){
   const price=parseFloat(document.getElementById("eprice").value)||0;
   const i=designs.findIndex(d=>d.src===src);
   if(i>-1)designs[i]={...designs[i],title,category:cat,price};
+  lsSave(designs);
   try{await postSheet({action:"update",src,title,category:cat,price});}catch(e){}
   closeM("medit");renderCatsGrid();renderCat();toast("✅ Updated!");
 }
@@ -897,6 +927,7 @@ async function saveEdit(){
 async function delDesign(src){
   if(!isAdmin||!confirm("Delete this?"))return;
   designs=designs.filter(d=>d.src!==src);
+  lsSave(designs);
   renderCatsGrid();renderCat();
   try{await postSheet({action:"delete",src});toast("🗑️ Deleted!");}catch(e){}
 }
